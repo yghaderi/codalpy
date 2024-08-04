@@ -2,9 +2,11 @@ from typing import Literal
 from annotated_types import IsDigits
 from urllib.parse import urlparse, parse_qs
 import re
-from codal.models import QueryParam, Letter, IncomeStatements
+import polars as pl
+from codal.models import QueryParam, Letter, IncomeStatement, GetIncomeStatement
 from codal.http import get
 from codal import gen_df
+
 
 class Codal:
     def __init__(self, query: QueryParam, category: Literal["production"]) -> None:
@@ -48,28 +50,45 @@ class Codal:
                                 [Letter.model_validate(i) for i in r["Letters"]]
                             )
             return letters
-    def income_statement(self):
+
+    def _get_incom_statemnt(self) -> GetIncomeStatement | None:
         letters = self.letter()
-        rs = []
         if letters is not None:
+            records = []
+            get_error = []
+            match_error = []
+            validation_error = []
+            res = []
             for i in letters:
                 urlp = urlparse(i.url)
                 params = parse_qs(urlp.query)
                 params["SheetId"] = ["1"]
-                r = get(url=f"{self.base_url}{urlp.path}",params=params, rtype="text")
+                r = get(url=f"{self.base_url}{urlp.path}", params=params, rtype="text")
                 if r is not None:
-                    pattern = r'var datasource = (.*?);'
+                    pattern = r"var datasource = (.*?);"
                     match = re.search(pattern, r)
                     if match:
-                        rs.append(match.group(1))
-        validated = []
-        if rs:
-            for j in rs:
-                try:
-                    data = IncomeStatements.model_validate_json(j)
-                    validated.append(data)
-                except Exception as e:
-                    print(e)
-        if validated:
-            df = gen_df.income_statement(validated, self._category)
-            return df
+                        text = match.group(1)
+                        try:
+                            records.append(
+                                (i, IncomeStatement.model_validate_json(text))
+                            )
+                        except Exception as e:
+                            validation_error.append((i, str(e)))
+                    else:
+                        match_error.append((i, str(r)))
+                else:
+                    get_error.append(i)
+            return GetIncomeStatement(
+                records=records,
+                get_error=get_error,
+                match_error=match_error,
+                validation_error=validation_error,
+            )
+
+    def income_statement(self) -> pl.DataFrame | None:
+        data = self._get_incom_statemnt()
+        if data:
+            if data.records:
+                df = gen_df.income_statement(data.records, self._category)
+                return df

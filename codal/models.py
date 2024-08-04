@@ -1,4 +1,5 @@
 from typing import ClassVar, Literal
+from typing_extensions import Optional
 from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
 
 from codal.utils import norm_char
@@ -13,7 +14,7 @@ class QueryParam(BaseModel):
     category: Literal[1] = 1  # گروه اطلاعیه --> اطلاعات و صورت مالی سالانه
     publisher_type: Literal[1] = 1  # نوع شرکت --> ناشران
     letter_type: Literal[6] = 6  # نوع اطلاعیه --> اطلاعات و صورتهای مالی میاندوره ای
-    length: Literal[3, 6, 9, 12]  # طول دوره
+    length: Literal[-1, 3, 6, 9, 12]  # طول دوره
     audited: bool = True  # حسابرسی شده
     not_audited: bool = True  # حسابرسی نشده
     mains: bool = True  # فقط شرکت اصلی
@@ -73,8 +74,12 @@ class Letter(BaseModel):
             if v[0] != "/":
                 v = f"/{v}"
             return f"{cls.base_url}{v}"
+
+
 class Cell(BaseModel):
-    model_config = ConfigDict(alias_generator=alias_generators.to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=alias_generators.to_camel, populate_by_name=True
+    )
 
     address: str
     category: int
@@ -94,7 +99,9 @@ class Cell(BaseModel):
 
 
 class Table(BaseModel):
-    model_config = ConfigDict(alias_generator=alias_generators.to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=alias_generators.to_camel, populate_by_name=True
+    )
 
     sequence: int
     sheet_code: int
@@ -104,7 +111,9 @@ class Table(BaseModel):
 
 
 class Sheet(BaseModel):
-    model_config = ConfigDict(alias_generator=alias_generators.to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=alias_generators.to_camel, populate_by_name=True
+    )
 
     version_no: int
     alias_name: str
@@ -113,8 +122,10 @@ class Sheet(BaseModel):
     tables: list[Table]
 
 
-class IncomeStatements(BaseModel):
-    model_config = ConfigDict(alias_generator=alias_generators.to_camel, populate_by_name=True)
+class IncomeStatement(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=alias_generators.to_camel, populate_by_name=True
+    )
 
     is_audited: bool
     period: int
@@ -125,3 +136,10 @@ class IncomeStatements(BaseModel):
     sheets: list[Sheet]
     type: int
     year_end_to_date: str
+
+
+class GetIncomeStatement(BaseModel):
+    records: list[tuple[Letter, IncomeStatement]]
+    get_error: list[Letter]
+    match_error: list[tuple[Letter, str]]
+    validation_error: list[tuple[Letter, str]]

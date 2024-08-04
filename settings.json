@@ -1,0 +1,9 @@
+{
+  "jupyter": {
+    "kernel_selections": {
+      "python3": "deno",
+      "typescript": "deno",
+      "javascript": "deno"
+    }
+  }
+}

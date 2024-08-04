@@ -1,5 +1,6 @@
 from typing import Literal, Any
 import requests
+from pydantic import BaseModel
 from requests.exceptions import HTTPError, Timeout, RequestException, ConnectionError
 
 HEADERS = {
