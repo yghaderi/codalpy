@@ -2,7 +2,7 @@ from typing import ClassVar, Literal
 from typing_extensions import Optional
 from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
 
-from codal.utils import norm_char
+from codalpy.utils import norm_char
 
 
 class QueryParam(BaseModel):

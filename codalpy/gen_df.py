@@ -1,10 +1,10 @@
 from typing import Literal
 import polars as pl
-from codal.models import IncomeStatement, Cell, Letter
-from codal.utils import translate
-from codal import dicts
-from codal import cols
-from codal.utils import fiscal_month
+from codalpy.models import IncomeStatement, Cell, Letter
+from codalpy.utils import translate
+from codalpy import dicts
+from codalpy import cols
+from codalpy.utils import fiscal_month
 
 
 def _cells(item: IncomeStatement) -> list[Cell] | None:

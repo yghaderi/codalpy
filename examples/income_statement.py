@@ -1,5 +1,5 @@
 # %%
-from codal.codal import Codal, QueryParam
+from codalpy.codal import Codal, QueryParam
 import polars as pl
 # %%
 qp = QueryParam(symbol="زاگرس", length=12)

@@ -3,9 +3,9 @@ from annotated_types import IsDigits
 from urllib.parse import urlparse, parse_qs
 import re
 import polars as pl
-from codal.models import QueryParam, Letter, IncomeStatement, GetIncomeStatement
-from codal.http import get
-from codal import gen_df
+from codalpy.models import QueryParam, Letter, IncomeStatement, GetIncomeStatement
+from codalpy.http import get
+from codalpy import gen_df
 
 
 class Codal:
