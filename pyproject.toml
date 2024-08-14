@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 jdatetime = "^5.0.0"
+polars = "^1.4.1"
+pydantic = "^2.8.2"
 
 
 [build-system]
