@@ -27,7 +27,7 @@ python -m pip install codalpy
 
 
 ## صورت‌هایِ مالی
-### صورت وضعیتِ مالی
+### صورت عملکردِ مالی
 
 ```python
         >>> from codalpy import Codal, QueryParam
