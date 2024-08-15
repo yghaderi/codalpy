@@ -1,9 +1,6 @@
-from typing import Literal
 import polars as pl
-from codalpy.models import IncomeStatement, Cell, Letter
-from codalpy.utils import translate
-from codalpy import dicts
-from codalpy import cols
+from codalpy.utils.models import IncomeStatement, Cell, Letter
+from codalpy.utils import translate, cols, dicts
 from codalpy.utils import fiscal_month
 
 

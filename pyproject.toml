@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "codalpy"
-version = "0.1.0"
+version = "0.1.2"
 description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 jdatetime = "^5.0.0"
 polars = "^1.4.1"
 pydantic = "^2.8.2"

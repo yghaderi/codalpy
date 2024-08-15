@@ -2,9 +2,9 @@ from typing import Literal
 from urllib.parse import urlparse, parse_qs
 import re
 import polars as pl
-from codalpy.models import QueryParam, Letter, IncomeStatement, GetIncomeStatement
-from codalpy.http import get
-from codalpy import gen_df
+from codalpy.utils.models import QueryParam, Letter, IncomeStatement, GetIncomeStatement
+from codalpy.utils.http import get
+from codalpy.utils import gen_df
 
 
 class Codal:
@@ -90,7 +90,7 @@ class Codal:
         .. raw:: html
 
             <div dir="rtl">
-                داده‌های نمایِ بازارِ اختیارِ-معامله‌یِ بورسِ تهران رو بهت می‌ده
+                صورت-عملکردِ مالی رو بهت میده
             </div>
 
         Returns
