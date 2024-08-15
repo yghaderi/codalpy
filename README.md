@@ -7,7 +7,9 @@
 ![GitHub](https://img.shields.io/github/license/yghaderi/codalpy)
 
 <div dir="rtl">
-کدال برای گرفتن و پالایشِ داده از codal.ir در حالِ توسعه است
+کدال برای گرفتن و پالایشِ داده از codal.ir در حالِ توسعه است.
+<br/>
+<a href="https://yghaderi.github.io/codalpy/_build/index.html"> راهنمایِ بهره-گیران</a>
 </div>
 
 

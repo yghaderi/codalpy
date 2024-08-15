@@ -1,9 +1,15 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 __all__ = ["income_statement"]
 
 
-class IncomeStatementDict(BaseModel):
+@dataclass
+class IncomeStatementDict:
+    production: dict[str, str]
+
+
+@dataclass
+class BalanceSheetDict:
     production: dict[str, str]
 
 
@@ -33,5 +39,57 @@ income_statement = IncomeStatementDict(
         "سود(زيان) خالص": "net_income",
         "سود (زيان) خالص هر سهم – ريال": "earnings_per_share",
         "سرمایه": "shares_outstanding",
+    }
+)
+
+balance_sheet = BalanceSheetDict(
+    production={
+        # 1402
+        "دارايي‌هاي ثابت مشهود": "tangible_fixed_assets",
+        "سرمايه‌گذاري در املاک": "investment_property",
+        "دارايي‌هاي نامشهود": "intangible_assets",
+        "سرمايه‌گذاري‌هاي بلندمدت": "long_term_investments",
+        "دريافتني‌هاي بلندمدت": "long_term_receivable",
+        "دارايي ماليات انتقالي": "",
+        "ساير دارايي‌ها": "other_assets",
+        "جمع دارايي‌هاي غيرجاري": "total_non_current_assets",
+
+        "سفارشات و پيش‌پرداخت‌ها": "prepayments",
+        "موجودي مواد و کالا": "inventories",
+        "دريافتني‌هاي تجاري و ساير دريافتني‌ها": "receivables",
+        "سرمايه‌گذاري‌هاي کوتاه‌مدت": "short_term_investments",
+        "موجودي نقد": "cash",
+        "دارايي‌هاي نگهداري شده براي فروش": "assets_for_Sale",
+        "جمع دارايي‌هاي جاري": "total_current_assets",
+        "جمع دارايي‌ها": "total_assets",
+
+        "سرمايه": "common_stock",
+        "افزايش سرمايه در جريان": "receives_for_capital_advance",
+        "صرف سهام": "capital_surplus",
+        "صرف سهام خزانه": "treasury_shares_surplus",
+        "اندوخته قانوني": "legal_reserve",
+        "ساير اندوخته‌ها": "other_reserves",
+        "مازاد تجديدارزيابي دارايي‌ها": "revaluation_surplus",
+        "تفاوت تسعير ارز عمليات خارجي": "exchange_reserve",
+        "سود(زيان) انباشته": "retained_earnings",
+        "سهام خزانه": "treasury_shares",
+        "جمع حقوق مالکانه": "total_equity",
+
+        "پرداختني‌هاي بلندمدت": "long_term_payable",
+        "تسهيلات مالي بلندمدت": "long_term_debt",
+        "بدهي ماليات انتقالي": "",
+        "ذخيره مزاياي پايان خدمت کارکنان": "allowance_for_post_retirement",
+        "جمع بدهي‌هاي غيرجاري": "total_non_current_liabilities",
+
+        "پرداختني‌هاي تجاري و ساير پرداختني‌ها": "payables",
+        "ماليات پرداختني": "",
+        "سود سهام پرداختني": "dividends_payable",
+        "تسهيلات مالي": "short_term_debt",
+        "ذخاير": "provisions",
+        "پيش‌دريافت‌ها": "deferred_revenue",
+        "بدهي‌هاي ‌مرتبط ‌با دارايي‌هاي نگهداري‌‌شده براي ‌فروش": "liabilities_related_to_assets_for_sale",
+        "جمع بدهي‌هاي جاري": "total_current_liabilities",
+        "جمع بدهي‌ها": "total_liabilities",
+        "جمع حقوق مالکانه و بدهي‌ها": "total_liabilities_equity",
     }
 )
