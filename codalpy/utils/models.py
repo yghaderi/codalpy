@@ -1,33 +1,7 @@
-from typing import ClassVar, Literal
+from typing import ClassVar
 from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
 
-from codalpy.utils import norm_char
-
-
-class QueryParam(BaseModel):
-    model_config = ConfigDict(
-        alias_generator=alias_generators.to_pascal, populate_by_name=True
-    )
-
-    symbol: str
-    category: Literal[1] = 1  # گروه اطلاعیه --> اطلاعات و صورت مالی سالانه
-    publisher_type: Literal[1] = 1  # نوع شرکت --> ناشران
-    letter_type: Literal[6] = 6  # نوع اطلاعیه --> اطلاعات و صورتهای مالی میاندوره ای
-    length: Literal[-1, 3, 6, 9, 12]  # طول دوره
-    audited: bool = True  # حسابرسی شده
-    not_audited: bool = True  # حسابرسی نشده
-    mains: bool = True  # فقط شرکت اصلی
-    childs: bool = False  # فقط زیر-مجموعه‌ها
-    consolidatable: bool = True  # اصلی
-    not_consolidatable: bool = True  # تلفیقی
-    auditor_ref: Literal[-1] = -1
-    company_state: Literal[1] = 1
-    company_type: Literal[1] = 1
-    page_number: int = 1
-    tracing_no: Literal[-1] = -1
-    publisher: bool = False
-    is_not_audited: bool = False
-    from_date: str = "1396/01/01"
+from codalpy.utils.utils import norm_char
 
 
 class Letter(BaseModel):
@@ -121,7 +95,7 @@ class Sheet(BaseModel):
     tables: list[Table]
 
 
-class IncomeStatement(BaseModel):
+class FinancialStatement(BaseModel):
     model_config = ConfigDict(
         alias_generator=alias_generators.to_camel, populate_by_name=True
     )
@@ -137,8 +111,8 @@ class IncomeStatement(BaseModel):
     year_end_to_date: str
 
 
-class GetIncomeStatement(BaseModel):
-    records: list[tuple[Letter, IncomeStatement]]
+class GetFinancialStatement(BaseModel):
+    records: list[tuple[Letter, FinancialStatement]]
     get_error: list[Letter]
     match_error: list[tuple[Letter, str]]
     validation_error: list[tuple[Letter, str]]

@@ -1,95 +1,97 @@
-from dataclasses import dataclass
+dicts = {
+    "income_statement": {
+        "production": {
+            "درآمدهاي عملياتي": "sales",
+            "بهاى تمام شده درآمدهاي عملياتي": "cost_of_sales",
+            "سود(زيان) ناخالص": "gross_profit",
+            "هزينه‏ هاى فروش، ادارى و عمومى": "operating_expenses",
+            "هزينه کاهش ارزش دريافتني‏ ها (هزينه استثنايي)": "exceptional_cost",
+            "ساير درآمدها": "other_operating_income",
+            "سایر درآمدهای عملیاتی": "other_operating_income",
+            "سایر هزینه ها": "other_operating_expense",
+            "سایر هزینه‌های عملیاتی": "other_operating_expense",
+            "سود(زيان) عملياتى": "operating_income",
+            "هزينه‏ هاى مالى": "interest_expense",
+            "ساير درآمدها و هزينه ‏هاى غيرعملياتى": "other_income",
+            "سایر درآمدها و هزینه‌های غیرعملیاتی- درآمد سرمایه‌گذاری‌ها": "other_income",
+            "سایر درآمدها و هزینه‌های غیرعملیاتی- اقلام متفرقه": "other_income",
+            "سود(زيان) عمليات در حال تداوم قبل از ماليات": "pretax_income",
+            "مالیات بر درآمد": "taxes",
+            "سال جاري": "taxes",
+            "سال‌هاي قبل": "taxes",
+            "سود(زيان) خالص عمليات در حال تداوم": "net_income_from_continuing_operations",
+            "سود (زيان) خالص عمليات متوقف شده": "discontinued_operations",
+            "سود (زیان) عملیات متوقف ‌شده پس از اثر مالیاتی": "discontinued_operations",
+            "سود(زيان) خالص": "net_income",
+            "سود (زيان) خالص هر سهم – ريال": "earnings_per_share",
+            "سرمایه": "shares_outstanding",
+        }
+    },
+    "balance_sheet": {
+        "production": {
+            "دارايي‌هاي ثابت مشهود": "property_plant_and_equipment",
+            "سرمايه‌گذاري در املاک": "investment_property",
+            "دارايي‌هاي نامشهود": "goodwill",
+            "سرمايه‌گذاري‌هاي بلندمدت": "long_term_investments",
+            "دريافتني‌هاي بلندمدت": "long_term_receivable",
+            "دارايي ماليات انتقالي": "deferred_tax_assets",
+            "ساير دارايي‌ها": "other_long_term_assets",
+            "جمع دارايي‌هاي غيرجاري": "total_non_current_assets",
 
-__all__ = ["income_statement"]
+            "سفارشات و پيش‌پرداخت‌ها": "prepayments",
+            "پیش پرداخت‌ها و سفارشات": "prepayments",
+            "موجودي مواد و کالا": "inventories",
+            "دريافتني‌هاي تجاري و ساير دريافتني‌ها": "trade_and_other_receivables",
+            "دریافتنی‌‌های تجاری": "trade_and_other_receivables",
+            "دریافتنی‌‌های غیرتجاری": "trade_and_other_receivables",
+            "سرمايه‌گذاري‌هاي کوتاه‌مدت": "short_term_investments",
+            "موجودي نقد": "cash",
+            "دارايي‌هاي نگهداري شده براي فروش": "assets_held_for_sale",
+            "جمع دارايي‌هاي جاري": "total_current_assets",
 
+            "جمع دارايي‌ها": "total_assets",
 
-@dataclass
-class IncomeStatementDict:
-    production: dict[str, str]
+            "سرمايه": "share_capital",
+            "افزايش سرمايه در جريان": "receives_for_capital_advance",
+            'افزایش (کاهش) سرمایه در جریان': "receives_for_capital_advance",
+            "صرف سهام": "capital_surplus",
+            "صرف (کسر) سهام": "capital_surplus",
+            "صرف سهام خزانه": "treasury_shares_surplus",
+            "اندوخته قانوني": "legal_reserve",
+            "ساير اندوخته‌ها": "other_reserves",
+            "مازاد تجديدارزيابي دارايي‌ها": "revaluation_reserve",
+            'مازاد تجدید ارزیابی دارایی\u200cهای نگهداری شده برای فروش': "revaluation_reserve",
+            "تفاوت تسعير ارز عمليات خارجي": "translation_reserve",
+            'اندوخته تسعیر ارز دارایی\u200cها و بدهی\u200cهای شرکت\u200cهای دولتی': "translation_reserve",
+            'تفاوت تسعیر ناشی از تبدیل به واحد پول گزارشگری': "translation_reserve",
+            "سود(زيان) انباشته": "retained_earnings",
+            "سهام خزانه": "treasury_shares",
+            "جمع حقوق مالکانه": "total_equity",
+            "جمع حقوق صاحبان سهام": "total_equity",
 
+            "پرداختني‌هاي بلندمدت": "long_term_payables",
+            "تسهيلات مالي بلندمدت": "long_term_debt",
+            "بدهي ماليات انتقالي": "deferred_tax_liabilities",
+            "ذخيره مزاياي پايان خدمت کارکنان": "pension_and_other_employee_obligations",
+            "جمع بدهي‌هاي غيرجاري": "total_non_current_liabilities",
 
-@dataclass
-class BalanceSheetDict:
-    production: dict[str, str]
+            "پرداختني‌هاي تجاري و ساير پرداختني‌ها": "trade_and_other_payables",
+            "پرداختنی‌های تجاری": "trade_and_other_payables",
+            "پرداختنی‌های غیرتجاری": "trade_and_other_payables",
+            "ماليات پرداختني": "current_tax_liabilities",
+            "سود سهام پرداختني": "dividends_payable",
+            "تسهيلات مالي": "short_term_debt",
+            "ذخاير": "provisions",
+            "پيش‌دريافت‌ها": "deferred_revenue",
+            "پیش‌دریافت‌های جاری": "deferred_revenue",
+            "پیش‌دریافت‌های غیرجاری": "deferred_revenue",
+            "بدهي‌هاي ‌مرتبط ‌با دارايي‌هاي نگهداري‌‌شده براي ‌فروش": "liabilities_held_for_sale",
+            "جمع بدهي‌هاي جاري": "total_current_liabilities",
 
+            "جمع بدهي‌ها": "total_liabilities",
 
-income_statement = IncomeStatementDict(
-    production={
-        "درآمدهاي عملياتي": "sales",
-        "بهاى تمام شده درآمدهاي عملياتي": "cost_of_sales",
-        "سود(زيان) ناخالص": "gross_profit",
-        "هزينه‏ هاى فروش، ادارى و عمومى": "operating_expenses",
-        "هزينه کاهش ارزش دريافتني‏ ها (هزينه استثنايي)": "exceptional_cost",
-        "ساير درآمدها": "other_operating_income",
-        "سایر درآمدهای عملیاتی": "other_operating_income",
-        "سایر هزینه ها": "other_operating_expense",
-        "سایر هزینه‌های عملیاتی": "other_operating_expense",
-        "سود(زيان) عملياتى": "operating_income",
-        "هزينه‏ هاى مالى": "interest_expense",
-        "ساير درآمدها و هزينه ‏هاى غيرعملياتى": "other_income",
-        "سایر درآمدها و هزینه‌های غیرعملیاتی- درآمد سرمایه‌گذاری‌ها": "other_income",
-        "سایر درآمدها و هزینه‌های غیرعملیاتی- اقلام متفرقه": "other_income",
-        "سود(زيان) عمليات در حال تداوم قبل از ماليات": "pretax_income",
-        "مالیات بر درآمد": "taxes",
-        "سال جاري": "taxes",
-        "سال‌هاي قبل": "taxes",
-        "سود(زيان) خالص عمليات در حال تداوم": "net_income_from_continuing_operations",
-        "سود (زيان) خالص عمليات متوقف شده": "discontinued_operations",
-        "سود (زیان) عملیات متوقف ‌شده پس از اثر مالیاتی": "discontinued_operations",
-        "سود(زيان) خالص": "net_income",
-        "سود (زيان) خالص هر سهم – ريال": "earnings_per_share",
-        "سرمایه": "shares_outstanding",
+            "جمع حقوق مالکانه و بدهي‌ها": "total_equity_and_liabilities",
+            'جمع بدهی\u200cها و حقوق صاحبان سهام': "total_equity_and_liabilities",
+        }
     }
-)
-
-balance_sheet = BalanceSheetDict(
-    production={
-        # 1402
-        "دارايي‌هاي ثابت مشهود": "tangible_fixed_assets",
-        "سرمايه‌گذاري در املاک": "investment_property",
-        "دارايي‌هاي نامشهود": "intangible_assets",
-        "سرمايه‌گذاري‌هاي بلندمدت": "long_term_investments",
-        "دريافتني‌هاي بلندمدت": "long_term_receivable",
-        "دارايي ماليات انتقالي": "",
-        "ساير دارايي‌ها": "other_assets",
-        "جمع دارايي‌هاي غيرجاري": "total_non_current_assets",
-
-        "سفارشات و پيش‌پرداخت‌ها": "prepayments",
-        "موجودي مواد و کالا": "inventories",
-        "دريافتني‌هاي تجاري و ساير دريافتني‌ها": "receivables",
-        "سرمايه‌گذاري‌هاي کوتاه‌مدت": "short_term_investments",
-        "موجودي نقد": "cash",
-        "دارايي‌هاي نگهداري شده براي فروش": "assets_for_Sale",
-        "جمع دارايي‌هاي جاري": "total_current_assets",
-        "جمع دارايي‌ها": "total_assets",
-
-        "سرمايه": "common_stock",
-        "افزايش سرمايه در جريان": "receives_for_capital_advance",
-        "صرف سهام": "capital_surplus",
-        "صرف سهام خزانه": "treasury_shares_surplus",
-        "اندوخته قانوني": "legal_reserve",
-        "ساير اندوخته‌ها": "other_reserves",
-        "مازاد تجديدارزيابي دارايي‌ها": "revaluation_surplus",
-        "تفاوت تسعير ارز عمليات خارجي": "exchange_reserve",
-        "سود(زيان) انباشته": "retained_earnings",
-        "سهام خزانه": "treasury_shares",
-        "جمع حقوق مالکانه": "total_equity",
-
-        "پرداختني‌هاي بلندمدت": "long_term_payable",
-        "تسهيلات مالي بلندمدت": "long_term_debt",
-        "بدهي ماليات انتقالي": "",
-        "ذخيره مزاياي پايان خدمت کارکنان": "allowance_for_post_retirement",
-        "جمع بدهي‌هاي غيرجاري": "total_non_current_liabilities",
-
-        "پرداختني‌هاي تجاري و ساير پرداختني‌ها": "payables",
-        "ماليات پرداختني": "",
-        "سود سهام پرداختني": "dividends_payable",
-        "تسهيلات مالي": "short_term_debt",
-        "ذخاير": "provisions",
-        "پيش‌دريافت‌ها": "deferred_revenue",
-        "بدهي‌هاي ‌مرتبط ‌با دارايي‌هاي نگهداري‌‌شده براي ‌فروش": "liabilities_related_to_assets_for_sale",
-        "جمع بدهي‌هاي جاري": "total_current_liabilities",
-        "جمع بدهي‌ها": "total_liabilities",
-        "جمع حقوق مالکانه و بدهي‌ها": "total_liabilities_equity",
-    }
-)
+}
