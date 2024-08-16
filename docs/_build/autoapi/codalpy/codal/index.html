@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>codalpy.codal &#8212; codalpy 0.1.0 documentation</title>
+    <title>codalpy.codal &#8212; codalpy 0.2.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,7 +121,7 @@
   
   
   
-    <p class="title logo__title">codalpy 0.1.0 documentation</p>
+    <p class="title logo__title">codalpy 0.2.0 documentation</p>
   
 </a></div>
     
@@ -333,7 +333,10 @@ document.write(`
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#codalpy.codal.Codal" title="codalpy.codal.Codal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Codal</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#codalpy.codal.QueryParam" title="codalpy.codal.QueryParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QueryParam</span></code></a></p></td>
+<td><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.8/concepts/models/">https://docs.pydantic.dev/2.8/concepts/models/</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#codalpy.codal.Codal" title="codalpy.codal.Codal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Codal</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -343,8 +346,215 @@ document.write(`
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QueryParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**data:</span> <span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.8/concepts/models/">https://docs.pydantic.dev/2.8/concepts/models/</a></p>
+<p>A base class for creating Pydantic models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__class_vars__">
+<span class="sig-name descname"><span class="pre">__class_vars__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__class_vars__" title="Link to this definition">#</a></dt>
+<dd><p>The names of classvars defined on the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__private_attributes__">
+<span class="sig-name descname"><span class="pre">__private_attributes__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__private_attributes__" title="Link to this definition">#</a></dt>
+<dd><p>Metadata about the private attributes of the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__signature__">
+<span class="sig-name descname"><span class="pre">__signature__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__signature__" title="Link to this definition">#</a></dt>
+<dd><p>The signature for instantiating the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_complete__">
+<span class="sig-name descname"><span class="pre">__pydantic_complete__</span></span><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.__pydantic_complete__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_complete__" title="Link to this definition">#</a></dt>
+<dd><p>Whether model building is completed, or if there are still undefined fields.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_core_schema__">
+<span class="sig-name descname"><span class="pre">__pydantic_core_schema__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_core_schema__" title="Link to this definition">#</a></dt>
+<dd><p>The pydantic-core schema used to build the SchemaValidator and SchemaSerializer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_custom_init__">
+<span class="sig-name descname"><span class="pre">__pydantic_custom_init__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_custom_init__" title="Link to this definition">#</a></dt>
+<dd><p>Whether the model has a custom <cite>__init__</cite> function.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_decorators__">
+<span class="sig-name descname"><span class="pre">__pydantic_decorators__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_decorators__" title="Link to this definition">#</a></dt>
+<dd><p>Metadata containing the decorators defined on the model.
+This replaces <cite>Model.__validators__</cite> and <cite>Model.__root_validators__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_generic_metadata__">
+<span class="sig-name descname"><span class="pre">__pydantic_generic_metadata__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_generic_metadata__" title="Link to this definition">#</a></dt>
+<dd><p>Metadata for generic models; contains data used for a similar purpose to
+__args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_parent_namespace__">
+<span class="sig-name descname"><span class="pre">__pydantic_parent_namespace__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_parent_namespace__" title="Link to this definition">#</a></dt>
+<dd><p>Parent namespace of the model, used for automatic rebuilding of models.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_post_init__">
+<span class="sig-name descname"><span class="pre">__pydantic_post_init__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_post_init__" title="Link to this definition">#</a></dt>
+<dd><p>The name of the post-init method for the model, if defined.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_root_model__">
+<span class="sig-name descname"><span class="pre">__pydantic_root_model__</span></span><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.__pydantic_root_model__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_root_model__" title="Link to this definition">#</a></dt>
+<dd><p>Whether the model is a <cite>RootModel</cite>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_serializer__">
+<span class="sig-name descname"><span class="pre">__pydantic_serializer__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_serializer__" title="Link to this definition">#</a></dt>
+<dd><p>The pydantic-core SchemaSerializer used to dump instances of the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_validator__">
+<span class="sig-name descname"><span class="pre">__pydantic_validator__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_validator__" title="Link to this definition">#</a></dt>
+<dd><p>The pydantic-core SchemaValidator used to validate instances of the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_extra__">
+<span class="sig-name descname"><span class="pre">__pydantic_extra__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_extra__" title="Link to this definition">#</a></dt>
+<dd><p>An instance attribute with the values of extra fields from validation when
+<cite>model_config[‘extra’] == ‘allow’</cite>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_fields_set__">
+<span class="sig-name descname"><span class="pre">__pydantic_fields_set__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_fields_set__" title="Link to this definition">#</a></dt>
+<dd><p>An instance attribute with the names of fields explicitly set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.__pydantic_private__">
+<span class="sig-name descname"><span class="pre">__pydantic_private__</span></span><a class="headerlink" href="#codalpy.codal.QueryParam.__pydantic_private__" title="Link to this definition">#</a></dt>
+<dd><p>Instance attribute with the values of private attributes set on the model instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.model_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.model_config" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.symbol">
+<span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.symbol" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.category">
+<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.category" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.publisher_type">
+<span class="sig-name descname"><span class="pre">publisher_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.publisher_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.publisher_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.letter_type">
+<span class="sig-name descname"><span class="pre">letter_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.letter_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.letter_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.length">
+<span class="sig-name descname"><span class="pre">length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">12</span></span><span class="p"><span class="pre">]</span></span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.length" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.audited">
+<span class="sig-name descname"><span class="pre">audited</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.audited"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.audited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.not_audited">
+<span class="sig-name descname"><span class="pre">not_audited</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.not_audited"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.not_audited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.mains">
+<span class="sig-name descname"><span class="pre">mains</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.mains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.mains" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.childs">
+<span class="sig-name descname"><span class="pre">childs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.childs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.childs" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.consolidatable">
+<span class="sig-name descname"><span class="pre">consolidatable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.consolidatable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.consolidatable" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.not_consolidatable">
+<span class="sig-name descname"><span class="pre">not_consolidatable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.not_consolidatable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.not_consolidatable" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.auditor_ref">
+<span class="sig-name descname"><span class="pre">auditor_ref</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.auditor_ref"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.auditor_ref" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.company_state">
+<span class="sig-name descname"><span class="pre">company_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.company_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.company_state" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.company_type">
+<span class="sig-name descname"><span class="pre">company_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.company_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.company_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.page_number">
+<span class="sig-name descname"><span class="pre">page_number</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.page_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.page_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.tracing_no">
+<span class="sig-name descname"><span class="pre">tracing_no</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.tracing_no"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.tracing_no" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.publisher">
+<span class="sig-name descname"><span class="pre">publisher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.publisher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.publisher" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.is_not_audited">
+<span class="sig-name descname"><span class="pre">is_not_audited</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.is_not_audited"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.is_not_audited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="codalpy.codal.QueryParam.from_date">
+<span class="sig-name descname"><span class="pre">from_date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'1396/01/01'</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#QueryParam.from_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.QueryParam.from_date" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="codalpy.codal.Codal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">codalpy.utils.models.QueryParam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'production'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/codalpy/codal.html#Codal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.Codal" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#codalpy.codal.QueryParam" title="codalpy.codal.QueryParam"><span class="pre">QueryParam</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'production'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/codalpy/codal.html#Codal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.Codal" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.codal.Codal.base_url">
 <span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://codal.ir'</span></em><a class="reference internal" href="../../../_modules/codalpy/codal.html#Codal.base_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.Codal.base_url" title="Link to this definition">#</a></dt>
@@ -404,6 +614,40 @@ document.write(`
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="codalpy.codal.Codal.balance_sheet">
+<span class="sig-name descname"><span class="pre">balance_sheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">polars.DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/codalpy/codal.html#Codal.balance_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.codal.Codal.balance_sheet" title="Link to this definition">#</a></dt>
+<dd><div dir="rtl">
+    صورت-وضعیتِ مالی رو بهت میده
+</div><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codalpy</span> <span class="kn">import</span> <span class="n">Codal</span><span class="p">,</span> <span class="n">QueryParam</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryParam</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;زاگرس&quot;</span><span class="p">,</span><span class="n">length</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;1400/01/01&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;production&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span><span class="o">.</span><span class="n">balance_sheet</span><span class="p">()</span>
+<span class="go">shape: (8, 54)</span>
+<span class="go">┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐</span>
+<span class="go">│ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │</span>
+<span class="go">│ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │</span>
+<span class="go">│ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │</span>
+<span class="go">╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡</span>
+<span class="go">│ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 15940028                     ┆ 0                   ┆ 163858   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 15940028                     ┆ 0                   ┆ 147157   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 12746494                     ┆ 0                   ┆ 138823   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">│ 10613508                     ┆ 0                   ┆ 138823   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="go">└──────────────────────────────┴─────────────────────┴──────────┴───────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -448,6 +692,45 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam"><code class="docutils literal notranslate"><span class="pre">QueryParam</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__class_vars__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__class_vars__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__private_attributes__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__private_attributes__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__signature__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__signature__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_complete__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_complete__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_core_schema__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_core_schema__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_custom_init__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_custom_init__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_decorators__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_decorators__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_generic_metadata__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_generic_metadata__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_parent_namespace__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_parent_namespace__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_post_init__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_post_init__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_root_model__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_root_model__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_serializer__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_serializer__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_validator__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_validator__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_extra__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_extra__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_fields_set__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_fields_set__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.__pydantic_private__"><code class="docutils literal notranslate"><span class="pre">QueryParam.__pydantic_private__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.model_config"><code class="docutils literal notranslate"><span class="pre">QueryParam.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.symbol"><code class="docutils literal notranslate"><span class="pre">QueryParam.symbol</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.category"><code class="docutils literal notranslate"><span class="pre">QueryParam.category</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.publisher_type"><code class="docutils literal notranslate"><span class="pre">QueryParam.publisher_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.letter_type"><code class="docutils literal notranslate"><span class="pre">QueryParam.letter_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.length"><code class="docutils literal notranslate"><span class="pre">QueryParam.length</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.audited"><code class="docutils literal notranslate"><span class="pre">QueryParam.audited</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.not_audited"><code class="docutils literal notranslate"><span class="pre">QueryParam.not_audited</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.mains"><code class="docutils literal notranslate"><span class="pre">QueryParam.mains</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.childs"><code class="docutils literal notranslate"><span class="pre">QueryParam.childs</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.consolidatable"><code class="docutils literal notranslate"><span class="pre">QueryParam.consolidatable</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.not_consolidatable"><code class="docutils literal notranslate"><span class="pre">QueryParam.not_consolidatable</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.auditor_ref"><code class="docutils literal notranslate"><span class="pre">QueryParam.auditor_ref</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.company_state"><code class="docutils literal notranslate"><span class="pre">QueryParam.company_state</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.company_type"><code class="docutils literal notranslate"><span class="pre">QueryParam.company_type</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.page_number"><code class="docutils literal notranslate"><span class="pre">QueryParam.page_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.tracing_no"><code class="docutils literal notranslate"><span class="pre">QueryParam.tracing_no</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.publisher"><code class="docutils literal notranslate"><span class="pre">QueryParam.publisher</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.is_not_audited"><code class="docutils literal notranslate"><span class="pre">QueryParam.is_not_audited</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.QueryParam.from_date"><code class="docutils literal notranslate"><span class="pre">QueryParam.from_date</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal"><code class="docutils literal notranslate"><span class="pre">Codal</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.base_url"><code class="docutils literal notranslate"><span class="pre">Codal.base_url</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.search_url"><code class="docutils literal notranslate"><span class="pre">Codal.search_url</span></code></a></li>
@@ -455,6 +738,7 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.query"><code class="docutils literal notranslate"><span class="pre">Codal.query</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.letter"><code class="docutils literal notranslate"><span class="pre">Codal.letter()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.income_statement"><code class="docutils literal notranslate"><span class="pre">Codal.income_statement()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.codal.Codal.balance_sheet"><code class="docutils literal notranslate"><span class="pre">Codal.balance_sheet()</span></code></a></li>
 </ul>
 </li>
 </ul>

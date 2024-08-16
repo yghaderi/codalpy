@@ -37,7 +37,6 @@ dicts = {
             "دارايي ماليات انتقالي": "deferred_tax_assets",
             "ساير دارايي‌ها": "other_long_term_assets",
             "جمع دارايي‌هاي غيرجاري": "total_non_current_assets",
-
             "سفارشات و پيش‌پرداخت‌ها": "prepayments",
             "پیش پرداخت‌ها و سفارشات": "prepayments",
             "موجودي مواد و کالا": "inventories",
@@ -48,33 +47,29 @@ dicts = {
             "موجودي نقد": "cash",
             "دارايي‌هاي نگهداري شده براي فروش": "assets_held_for_sale",
             "جمع دارايي‌هاي جاري": "total_current_assets",
-
             "جمع دارايي‌ها": "total_assets",
-
             "سرمايه": "share_capital",
             "افزايش سرمايه در جريان": "receives_for_capital_advance",
-            'افزایش (کاهش) سرمایه در جریان': "receives_for_capital_advance",
+            "افزایش (کاهش) سرمایه در جریان": "receives_for_capital_advance",
             "صرف سهام": "capital_surplus",
             "صرف (کسر) سهام": "capital_surplus",
             "صرف سهام خزانه": "treasury_shares_surplus",
             "اندوخته قانوني": "legal_reserve",
             "ساير اندوخته‌ها": "other_reserves",
             "مازاد تجديدارزيابي دارايي‌ها": "revaluation_reserve",
-            'مازاد تجدید ارزیابی دارایی\u200cهای نگهداری شده برای فروش': "revaluation_reserve",
+            "مازاد تجدید ارزیابی دارایی\u200cهای نگهداری شده برای فروش": "revaluation_reserve",
             "تفاوت تسعير ارز عمليات خارجي": "translation_reserve",
-            'اندوخته تسعیر ارز دارایی\u200cها و بدهی\u200cهای شرکت\u200cهای دولتی': "translation_reserve",
-            'تفاوت تسعیر ناشی از تبدیل به واحد پول گزارشگری': "translation_reserve",
+            "اندوخته تسعیر ارز دارایی\u200cها و بدهی\u200cهای شرکت\u200cهای دولتی": "translation_reserve",
+            "تفاوت تسعیر ناشی از تبدیل به واحد پول گزارشگری": "translation_reserve",
             "سود(زيان) انباشته": "retained_earnings",
             "سهام خزانه": "treasury_shares",
             "جمع حقوق مالکانه": "total_equity",
             "جمع حقوق صاحبان سهام": "total_equity",
-
             "پرداختني‌هاي بلندمدت": "long_term_payables",
             "تسهيلات مالي بلندمدت": "long_term_debt",
             "بدهي ماليات انتقالي": "deferred_tax_liabilities",
             "ذخيره مزاياي پايان خدمت کارکنان": "pension_and_other_employee_obligations",
             "جمع بدهي‌هاي غيرجاري": "total_non_current_liabilities",
-
             "پرداختني‌هاي تجاري و ساير پرداختني‌ها": "trade_and_other_payables",
             "پرداختنی‌های تجاری": "trade_and_other_payables",
             "پرداختنی‌های غیرتجاری": "trade_and_other_payables",
@@ -87,11 +82,9 @@ dicts = {
             "پیش‌دریافت‌های غیرجاری": "deferred_revenue",
             "بدهي‌هاي ‌مرتبط ‌با دارايي‌هاي نگهداري‌‌شده براي ‌فروش": "liabilities_held_for_sale",
             "جمع بدهي‌هاي جاري": "total_current_liabilities",
-
             "جمع بدهي‌ها": "total_liabilities",
-
             "جمع حقوق مالکانه و بدهي‌ها": "total_equity_and_liabilities",
-            'جمع بدهی\u200cها و حقوق صاحبان سهام': "total_equity_and_liabilities",
+            "جمع بدهی\u200cها و حقوق صاحبان سهام": "total_equity_and_liabilities",
         }
-    }
+    },
 }

@@ -19,12 +19,13 @@ Classes
 .. autoapisummary::
 
    codalpy.Codal
+   codalpy.QueryParam
 
 
 Package Contents
 ----------------
 
-.. py:class:: Codal(query: codalpy.utils.models.QueryParam, category: Literal['production'])
+.. py:class:: Codal(query: QueryParam, category: Literal['production'])
 
    .. py:attribute:: base_url
       :value: 'https://codal.ir'
@@ -78,6 +79,226 @@ Package Contents
       │ 143234768 ┆ -61344224     ┆ 81890544     ┆ -34001119          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
       │ 143234768 ┆ -61251730     ┆ 81983038     ┆ -31375649          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
       └───────────┴───────────────┴──────────────┴────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+
+
+
+   .. py:method:: balance_sheet() -> polars.DataFrame | None
+
+      .. raw:: html
+
+          <div dir="rtl">
+              صورت-وضعیتِ مالی رو بهت میده
+          </div>
+
+      :rtype: polars.DataFrame
+
+      .. rubric:: Example
+
+      >>> from codalpy import Codal, QueryParam
+      >>> query = QueryParam(symbol="زاگرس",length=12, from_date="1400/01/01")
+      >>> codal = Codal(query=query, category="production")
+      >>> codal.balance_sheet()
+      shape: (8, 54)
+      ┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
+      │ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │
+      │ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │
+      │ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │
+      ╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
+      │ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 15940028                     ┆ 0                   ┆ 163858   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 15940028                     ┆ 0                   ┆ 147157   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 12746494                     ┆ 0                   ┆ 138823   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      │ 10613508                     ┆ 0                   ┆ 138823   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
+      └──────────────────────────────┴─────────────────────┴──────────┴───────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+
+
+
+.. py:class:: QueryParam(/, **data: Any)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Usage docs: https://docs.pydantic.dev/2.8/concepts/models/
+
+   A base class for creating Pydantic models.
+
+   .. attribute:: __class_vars__
+
+      The names of classvars defined on the model.
+
+   .. attribute:: __private_attributes__
+
+      Metadata about the private attributes of the model.
+
+   .. attribute:: __signature__
+
+      The signature for instantiating the model.
+
+   .. attribute:: __pydantic_complete__
+
+      Whether model building is completed, or if there are still undefined fields.
+
+   .. attribute:: __pydantic_core_schema__
+
+      The pydantic-core schema used to build the SchemaValidator and SchemaSerializer.
+
+   .. attribute:: __pydantic_custom_init__
+
+      Whether the model has a custom `__init__` function.
+
+   .. attribute:: __pydantic_decorators__
+
+      Metadata containing the decorators defined on the model.
+      This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.
+
+   .. attribute:: __pydantic_generic_metadata__
+
+      Metadata for generic models; contains data used for a similar purpose to
+      __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.
+
+   .. attribute:: __pydantic_parent_namespace__
+
+      Parent namespace of the model, used for automatic rebuilding of models.
+
+   .. attribute:: __pydantic_post_init__
+
+      The name of the post-init method for the model, if defined.
+
+   .. attribute:: __pydantic_root_model__
+
+      Whether the model is a `RootModel`.
+
+   .. attribute:: __pydantic_serializer__
+
+      The pydantic-core SchemaSerializer used to dump instances of the model.
+
+   .. attribute:: __pydantic_validator__
+
+      The pydantic-core SchemaValidator used to validate instances of the model.
+
+   .. attribute:: __pydantic_extra__
+
+      An instance attribute with the values of extra fields from validation when
+      `model_config['extra'] == 'allow'`.
+
+   .. attribute:: __pydantic_fields_set__
+
+      An instance attribute with the names of fields explicitly set.
+
+   .. attribute:: __pydantic_private__
+
+      Instance attribute with the values of private attributes set on the model instance.
+
+
+   .. py:attribute:: model_config
+
+
+   .. py:attribute:: symbol
+      :type:  str
+
+
+   .. py:attribute:: category
+      :type:  Literal[1]
+      :value: 1
+
+
+
+   .. py:attribute:: publisher_type
+      :type:  Literal[1]
+      :value: 1
+
+
+
+   .. py:attribute:: letter_type
+      :type:  Literal[6]
+      :value: 6
+
+
+
+   .. py:attribute:: length
+      :type:  Literal[-1, 3, 6, 9, 12]
+
+
+   .. py:attribute:: audited
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: not_audited
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: mains
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: childs
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: consolidatable
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: not_consolidatable
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: auditor_ref
+      :type:  Literal[-1]
+
+
+   .. py:attribute:: company_state
+      :type:  Literal[1]
+      :value: 1
+
+
+
+   .. py:attribute:: company_type
+      :type:  Literal[1]
+      :value: 1
+
+
+
+   .. py:attribute:: page_number
+      :type:  int
+      :value: 1
+
+
+
+   .. py:attribute:: tracing_no
+      :type:  Literal[-1]
+
+
+   .. py:attribute:: publisher
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: is_not_audited
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: from_date
+      :type:  str
+      :value: '1396/01/01'
 
 
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>codalpy.codal &#8212; codalpy 0.1.0 documentation</title>
+    <title>codalpy.codal &#8212; codalpy 0.2.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">codalpy 0.1.0 documentation</p>
+    <p class="title logo__title">codalpy 0.2.0 documentation</p>
   
 </a></div>
     
@@ -309,10 +309,102 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span>
 <span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
-<span class="kn">from</span> <span class="nn">codalpy.utils.models</span> <span class="kn">import</span> <span class="n">QueryParam</span><span class="p">,</span> <span class="n">Letter</span><span class="p">,</span> <span class="n">IncomeStatement</span><span class="p">,</span> <span class="n">GetIncomeStatement</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">alias_generators</span><span class="p">,</span> <span class="n">field_validator</span>
+
+<span class="kn">from</span> <span class="nn">codalpy.utils.models</span> <span class="kn">import</span> <span class="n">Letter</span><span class="p">,</span> <span class="n">FinancialStatement</span><span class="p">,</span> <span class="n">GetFinancialStatement</span>
 <span class="kn">from</span> <span class="nn">codalpy.utils.http</span> <span class="kn">import</span> <span class="n">get</span>
-<span class="kn">from</span> <span class="nn">codalpy.utils</span> <span class="kn">import</span> <span class="n">gen_df</span>
+<span class="kn">from</span> <span class="nn">codalpy.utils.gen_df</span> <span class="kn">import</span> <span class="n">clean_df</span>
+
+
+<div class="viewcode-block" id="QueryParam">
+<a class="viewcode-back" href="../../autoapi/codalpy/index.html#codalpy.codal.QueryParam">[docs]</a>
+<span class="k">class</span> <span class="nc">QueryParam</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryParam.model_config">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.model_config">[docs]</a>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+        <span class="n">alias_generator</span><span class="o">=</span><span class="n">alias_generators</span><span class="o">.</span><span class="n">to_pascal</span><span class="p">,</span> <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QueryParam.symbol">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.symbol">[docs]</a>
+    <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span></div>
+
+<div class="viewcode-block" id="QueryParam.category">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.category">[docs]</a>
+    <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># گروه اطلاعیه --&gt; اطلاعات و صورت مالی سالانه</span></div>
+
+<div class="viewcode-block" id="QueryParam.publisher_type">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.publisher_type">[docs]</a>
+    <span class="n">publisher_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># نوع شرکت --&gt; ناشران</span></div>
+
+<div class="viewcode-block" id="QueryParam.letter_type">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.letter_type">[docs]</a>
+    <span class="n">letter_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># نوع اطلاعیه --&gt; اطلاعات و صورتهای مالی میاندوره ای</span></div>
+
+<div class="viewcode-block" id="QueryParam.length">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.length">[docs]</a>
+    <span class="n">length</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>  <span class="c1"># طول دوره</span></div>
+
+<div class="viewcode-block" id="QueryParam.audited">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.audited">[docs]</a>
+    <span class="n">audited</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># حسابرسی شده</span></div>
+
+<div class="viewcode-block" id="QueryParam.not_audited">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.not_audited">[docs]</a>
+    <span class="n">not_audited</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># حسابرسی نشده</span></div>
+
+<div class="viewcode-block" id="QueryParam.mains">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.mains">[docs]</a>
+    <span class="n">mains</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># فقط شرکت اصلی</span></div>
+
+<div class="viewcode-block" id="QueryParam.childs">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.childs">[docs]</a>
+    <span class="n">childs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># فقط زیر-مجموعه‌ها</span></div>
+
+<div class="viewcode-block" id="QueryParam.consolidatable">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.consolidatable">[docs]</a>
+    <span class="n">consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># اصلی</span></div>
+
+<div class="viewcode-block" id="QueryParam.not_consolidatable">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.not_consolidatable">[docs]</a>
+    <span class="n">not_consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># تلفیقی</span></div>
+
+<div class="viewcode-block" id="QueryParam.auditor_ref">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.auditor_ref">[docs]</a>
+    <span class="n">auditor_ref</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="QueryParam.company_state">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.company_state">[docs]</a>
+    <span class="n">company_state</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="QueryParam.company_type">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.company_type">[docs]</a>
+    <span class="n">company_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="QueryParam.page_number">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.page_number">[docs]</a>
+    <span class="n">page_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="QueryParam.tracing_no">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.tracing_no">[docs]</a>
+    <span class="n">tracing_no</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="QueryParam.publisher">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.publisher">[docs]</a>
+    <span class="n">publisher</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="QueryParam.is_not_audited">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.is_not_audited">[docs]</a>
+    <span class="n">is_not_audited</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="QueryParam.from_date">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.from_date">[docs]</a>
+    <span class="n">from_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;1396/01/01&quot;</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="Codal">
@@ -375,18 +467,17 @@ document.write(`
             <span class="k">return</span> <span class="n">letters</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_incom_statemnt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GetIncomeStatement</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_financial_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheet_id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">GetFinancialStatement</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">letters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">letter</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">letters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">get_error</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">match_error</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">validation_error</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">letters</span><span class="p">:</span>
                 <span class="n">urlp</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
                 <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">urlp</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
-                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;SheetId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">]</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;SheetId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sheet_id</span><span class="p">]</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">urlp</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;var datasource = (.*?);&quot;</span>
@@ -395,7 +486,7 @@ document.write(`
                         <span class="n">text</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">IncomeStatement</span><span class="o">.</span><span class="n">model_validate_json</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+                                <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">FinancialStatement</span><span class="o">.</span><span class="n">model_validate_json</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
                             <span class="p">)</span>
                         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">validation_error</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
@@ -403,7 +494,7 @@ document.write(`
                         <span class="n">match_error</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">get_error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">GetIncomeStatement</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">GetFinancialStatement</span><span class="p">(</span>
                 <span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">,</span>
                 <span class="n">get_error</span><span class="o">=</span><span class="n">get_error</span><span class="p">,</span>
                 <span class="n">match_error</span><span class="o">=</span><span class="n">match_error</span><span class="p">,</span>
@@ -446,10 +537,59 @@ document.write(`
 <span class="sd">        │ 143234768 ┆ -61251730     ┆ 81983038     ┆ -31375649          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="sd">        └───────────┴───────────────┴──────────────┴────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_incom_statemnt</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_financial_statement</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">:</span>
-                <span class="n">df</span> <span class="o">=</span> <span class="n">gen_df</span><span class="o">.</span><span class="n">income_statement</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span><span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">clean_df</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span><span class="p">,</span> <span class="s2">&quot;IncomeStatement&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="Codal.balance_sheet">
+<a class="viewcode-back" href="../../autoapi/codalpy/index.html#codalpy.codal.Codal.balance_sheet">[docs]</a>
+    <span class="k">def</span> <span class="nf">balance_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. raw:: html</span>
+
+<span class="sd">            &lt;div dir=&quot;rtl&quot;&gt;</span>
+<span class="sd">                صورت-وضعیتِ مالی رو بهت میده</span>
+<span class="sd">            &lt;/div&gt;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        polars.DataFrame</span>
+
+<span class="sd">        example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; from codalpy import Codal, QueryParam</span>
+<span class="sd">        &gt;&gt;&gt; query = QueryParam(symbol=&quot;زاگرس&quot;,length=12, from_date=&quot;1400/01/01&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; codal = Codal(query=query, category=&quot;production&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; codal.balance_sheet()</span>
+<span class="sd">        shape: (8, 54)</span>
+<span class="sd">        ┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐</span>
+<span class="sd">        │ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │</span>
+<span class="sd">        │ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │</span>
+<span class="sd">        │ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │</span>
+<span class="sd">        ╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡</span>
+<div class="viewcode-block" id="QueryParam.__pydantic_complete__">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.__pydantic_complete__">[docs]</a>
+<span class="sd">        │ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span></div>
+
+<div class="viewcode-block" id="QueryParam.__pydantic_root_model__">
+<a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.__pydantic_root_model__">[docs]</a>
+<span class="sd">        │ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span></div>
+
+<span class="sd">        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 15940028                     ┆ 0                   ┆ 163858   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 15940028                     ┆ 0                   ┆ 147157   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 12746494                     ┆ 0                   ┆ 138823   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 10613508                     ┆ 0                   ┆ 138823   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        └──────────────────────────────┴─────────────────────┴──────────┴───────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_financial_statement</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">:</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">clean_df</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span><span class="p">,</span> <span class="s2">&quot;BalanceSheet&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">df</span></div>
 </div>
 

@@ -79,7 +79,9 @@ class Codal:
                             )
             return letters
 
-    def _get_financial_statement(self, sheet_id: Literal["0", "1"]) -> GetFinancialStatement | None:
+    def _get_financial_statement(
+        self, sheet_id: Literal["0", "1"]
+    ) -> GetFinancialStatement | None:
         letters = self.letter()
         if letters is not None:
             records = []
