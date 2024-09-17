@@ -23,22 +23,21 @@ def _cells(
             return r
 
 
-def cells_to_df(cells: list[Cell]) -> pl.DataFrame | None:
-    cells = [(i.column_sequence, i.row_sequence, i.value) for i in cells]
-    df = pl.from_records(cells, schema=["col", "row", "value"], orient="row")
+def cells_to_df(cells: list[Cell]) -> pl.DataFrame:
+    cells_ = [(i.column_sequence, i.row_sequence, i.value) for i in cells]
+    df = pl.from_records(cells_, schema=["col", "row", "value"], orient="row")
     df = df.pivot(values="value", on="col", index="row")
     df_filter = df.filter(pl.col("1") == "شرح")
-    if not df_filter.is_empty():
-        index = []
-        df_ = pl.DataFrame()
-        for i, v in enumerate(df_filter.row(0)):
-            if normalize_fs_item(str(v)) == "شرح":
-                index.append(i)
-        for i in index:
-            selected = df.select([str(i), str(i + 1)])
-            selected.columns = ["item", "value"]
-            df_ = pl.concat([df_, selected])
-        return df_
+    index = []
+    df_ = pl.DataFrame()
+    for i, v in enumerate(df_filter.row(0)):
+        if normalize_fs_item(str(v)) == "شرح":
+            index.append(i)
+    for i in index:
+        selected = df.select([str(i), str(i + 1)])
+        selected.columns = ["item", "value"]
+        df_ = pl.concat([df_, selected])
+    return df_
 
 
 def clean_df(
