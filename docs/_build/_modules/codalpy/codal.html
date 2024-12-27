@@ -307,15 +307,18 @@ document.write(`
                   
   <h1>Source code for codalpy.codal</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span><span class="p">,</span> <span class="n">parse_qs</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">alias_generators</span><span class="p">,</span> <span class="n">field_validator</span>
 
 <span class="kn">from</span> <span class="nn">codalpy.utils.models</span> <span class="kn">import</span> <span class="n">Letter</span><span class="p">,</span> <span class="n">FinancialStatement</span><span class="p">,</span> <span class="n">GetFinancialStatement</span>
-<span class="kn">from</span> <span class="nn">codalpy.utils.http</span> <span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">codalpy.utils.http</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">HEADERS</span>
 <span class="kn">from</span> <span class="nn">codalpy.utils.gen_df</span> <span class="kn">import</span> <span class="n">clean_df</span>
+<span class="kn">from</span> <span class="nn">codalpy.utils</span> <span class="kn">import</span> <span class="n">etf</span>
 
 
 <div class="viewcode-block" id="QueryParam">
@@ -334,7 +337,7 @@ document.write(`
 
 <div class="viewcode-block" id="QueryParam.category">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.category">[docs]</a>
-    <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># گروه اطلاعیه --&gt; اطلاعات و صورت مالی سالانه</span></div>
+    <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># گروه اطلاعیه --&gt; اطلاعات و صورت مالی سالانه</span></div>
 
 <div class="viewcode-block" id="QueryParam.publisher_type">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.publisher_type">[docs]</a>
@@ -342,7 +345,7 @@ document.write(`
 
 <div class="viewcode-block" id="QueryParam.letter_type">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.letter_type">[docs]</a>
-    <span class="n">letter_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># نوع اطلاعیه --&gt; اطلاعات و صورتهای مالی میاندوره ای</span></div>
+    <span class="n">letter_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># نوع اطلاعیه --&gt; اطلاعات و صورتهای مالی میاندوره ای ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.length">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.length">[docs]</a>
@@ -358,19 +361,19 @@ document.write(`
 
 <div class="viewcode-block" id="QueryParam.mains">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.mains">[docs]</a>
-    <span class="n">mains</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># فقط شرکت اصلی</span></div>
+    <span class="n">mains</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># فقط شرکت اصلی ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.childs">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.childs">[docs]</a>
-    <span class="n">childs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># فقط زیر-مجموعه‌ها</span></div>
+    <span class="n">childs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># فقط زیر-مجموعه‌ها ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.consolidatable">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.consolidatable">[docs]</a>
-    <span class="n">consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># اصلی</span></div>
+    <span class="n">consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># اصلی ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.not_consolidatable">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.not_consolidatable">[docs]</a>
-    <span class="n">not_consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># تلفیقی</span></div>
+    <span class="n">not_consolidatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># تلفیقی ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.auditor_ref">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.auditor_ref">[docs]</a>
@@ -378,11 +381,11 @@ document.write(`
 
 <div class="viewcode-block" id="QueryParam.company_state">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.company_state">[docs]</a>
-    <span class="n">company_state</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+    <span class="n">company_state</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="QueryParam.company_type">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.company_type">[docs]</a>
-    <span class="n">company_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+    <span class="n">company_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="QueryParam.page_number">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.page_number">[docs]</a>
@@ -390,11 +393,11 @@ document.write(`
 
 <div class="viewcode-block" id="QueryParam.tracing_no">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.tracing_no">[docs]</a>
-    <span class="n">tracing_no</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+    <span class="n">tracing_no</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.publisher">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.publisher">[docs]</a>
-    <span class="n">publisher</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">publisher</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># ok</span></div>
 
 <div class="viewcode-block" id="QueryParam.is_not_audited">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.is_not_audited">[docs]</a>
@@ -410,7 +413,7 @@ document.write(`
 <div class="viewcode-block" id="Codal">
 <a class="viewcode-back" href="../../autoapi/codalpy/index.html#codalpy.codal.Codal">[docs]</a>
 <span class="k">class</span> <span class="nc">Codal</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">QueryParam</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;production&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">QueryParam</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;production&quot;</span><span class="p">,</span> <span class="s2">&quot;etf&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <div class="viewcode-block" id="Codal.base_url">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.Codal.base_url">[docs]</a>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://codal.ir&quot;</span></div>
@@ -467,7 +470,9 @@ document.write(`
             <span class="k">return</span> <span class="n">letters</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_financial_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheet_id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">GetFinancialStatement</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_financial_statement</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">sheet_id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GetFinancialStatement</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">letters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">letter</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">letters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
@@ -565,19 +570,19 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; codal = Codal(query=query, category=&quot;production&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; codal.balance_sheet()</span>
 <span class="sd">        shape: (8, 54)</span>
-<span class="sd">        ┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐</span>
-<span class="sd">        │ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │</span>
-<span class="sd">        │ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │</span>
-<span class="sd">        │ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │</span>
-<span class="sd">        ╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡</span>
 <div class="viewcode-block" id="QueryParam.__pydantic_complete__">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.__pydantic_complete__">[docs]</a>
-<span class="sd">        │ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span></div>
+<span class="sd">        ┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐</span></div>
 
 <div class="viewcode-block" id="QueryParam.__pydantic_root_model__">
 <a class="viewcode-back" href="../../autoapi/codalpy/codal/index.html#codalpy.codal.QueryParam.__pydantic_root_model__">[docs]</a>
-<span class="sd">        │ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span></div>
+<span class="sd">        │ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │</span></div>
 
+<span class="sd">        │ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │</span>
+<span class="sd">        │ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │</span>
+<span class="sd">        ╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡</span>
+<span class="sd">        │ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
+<span class="sd">        │ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="sd">        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="sd">        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="sd">        │ 15940028                     ┆ 0                   ┆ 163858   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
@@ -591,6 +596,108 @@ document.write(`
             <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">:</span>
                 <span class="n">df</span> <span class="o">=</span> <span class="n">clean_df</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">records</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category</span><span class="p">,</span> <span class="s2">&quot;BalanceSheet&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="Codal.etf_portfolio">
+<a class="viewcode-back" href="../../autoapi/codalpy/index.html#codalpy.codal.Codal.etf_portfolio">[docs]</a>
+    <span class="k">def</span> <span class="nf">etf_portfolio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. raw:: html</span>
+
+<span class="sd">            &lt;div dir=&quot;rtl&quot;&gt;</span>
+<span class="sd">                پورتفوی سهامِ صندوق‌هایِ ETF رو به صورتِ‌ ماهانه بهت میده.</span>
+<span class="sd">            &lt;/div&gt;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        polars.DataFrame</span>
+
+<span class="sd">        example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; from codalpy import Codal, QueryParam</span>
+<span class="sd">        &gt;&gt;&gt; query = QueryParam(symbol=&quot;پتروآگاه&quot;,length=-1, from_date=&quot;1403/01/01&quot;, category=3, letter_type=8, company_state=2, company_type=3)</span>
+<span class="sd">        &gt;&gt;&gt; codal = Codal(query=query, category=&quot;etf&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; codal.etf_portfolio()</span>
+<span class="sd">        shape: (368, 19)</span>
+<span class="sd">        ┌───────────┬───────────┬───────────┬───────────┬───┬──────────┬───────────┬───────────┬───────────┐</span>
+<span class="sd">        │ name      ┆ volume_be ┆ total_cos ┆ net_proce ┆ … ┆ symbol   ┆ title     ┆ url       ┆ attachmen │</span>
+<span class="sd">        │ ---       ┆ g         ┆ t_beg     ┆ eds_beg   ┆   ┆ ---      ┆ ---       ┆ ---       ┆ t_url     │</span>
+<span class="sd">        │ str       ┆ ---       ┆ ---       ┆ ---       ┆   ┆ str      ┆ str       ┆ str       ┆ ---       │</span>
+<span class="sd">        │           ┆ i64       ┆ i64       ┆ i64       ┆   ┆          ┆           ┆           ┆ str       │</span>
+<span class="sd">        ╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪══════════╪═══════════╪═══════════╪═══════════╡</span>
+<span class="sd">        │ ‫آريان     ┆ 6334379   ┆ 723873677 ┆ 907982617 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ كيميا تك  ┆           ┆ 10        ┆ 96        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫املاح      ┆ 5561313   ┆ 832807586 ┆ 110840874 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ ايران     ┆           ┆ 24        ┆ 912       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫املاح      ┆ 0         ┆ 0         ┆ 0         ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ ايران     ┆           ┆           ┆           ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │ (تقدم)    ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫ایرکا     ┆ 26608118  ┆ 614331682 ┆ 727104993 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ پارت صنعت ┆           ┆ 04        ┆ 70        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫تراكتور   ┆ 5000000   ┆ 477442656 ┆ 521876250 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ سازي      ┆           ┆ 00        ┆ 00        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ …         ┆ …         ┆ …         ┆ …         ┆ … ┆ …        ┆ …         ┆ …         ┆ …         │</span>
+<span class="sd">        │ ‫پديده     ┆ 15094056  ┆ 134574637 ┆ 156194204 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ شيمي قرن  ┆           ┆ 694       ┆ 678       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫پست بانك  ┆ 5570715   ┆ 516123082 ┆ 458510733 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ ايران     ┆           ┆ 64        ┆ 55        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫کشتیرانی  ┆ 633333    ┆ 105679909 ┆ 125346325 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ دریای خزر ┆           ┆ 66        ┆ 53        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫گ.س.وت.ص. ┆ 53000000  ┆ 100928530 ┆ 974139178 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ پتروشيمي  ┆           ┆ 916       ┆ 50        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │ خليج فارس ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        │ ‫گسترش     ┆ 40983555  ┆ 620900858 ┆ 657946200 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="sd">        │ سوخت سبزز ┆           ┆ 25        ┆ 99        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="sd">        │ اگرس(سهام ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="sd">        │ ي عام…    ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="sd">        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="sd">        └───────────┴───────────┴───────────┴───────────┴───┴──────────┴───────────┴───────────┴───────────┘</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">letters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">letter</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">letters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">letter</span><span class="o">.</span><span class="n">has_attachment</span><span class="p">:</span>
+                <span class="n">attachment</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">attachment_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+                <span class="n">xlsx_endpoint</span> <span class="o">=</span> <span class="n">etf</span><span class="o">.</span><span class="n">find_download_endpoint</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">xlsx</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/Reports/</span><span class="si">{</span><span class="n">xlsx_endpoint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+                <span class="n">raw_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">xlsx</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="n">sheet_id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">clean_df</span> <span class="o">=</span> <span class="n">etf</span><span class="o">.</span><span class="n">clean_raw_df</span><span class="p">(</span><span class="n">raw_df</span><span class="p">)</span>
+                <span class="n">clean_df</span> <span class="o">=</span> <span class="n">clean_df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">publish_date_time</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;publish_date_time&quot;</span><span class="p">),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">title</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">letter</span><span class="o">.</span><span class="n">attachment_url</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;attachment_url&quot;</span><span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">clean_df</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df</span></div>
 </div>
 
 </pre></div>

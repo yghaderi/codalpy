@@ -353,7 +353,7 @@ document.write(`
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="codalpy.Codal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#codalpy.QueryParam" title="codalpy.QueryParam"><span class="pre">QueryParam</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'production'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Codal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#codalpy.QueryParam" title="codalpy.QueryParam"><span class="pre">QueryParam</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'production'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'etf'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.Codal.base_url">
 <span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://codal.ir'</span></em><a class="headerlink" href="#codalpy.Codal.base_url" title="Link to this definition">#</a></dt>
@@ -443,6 +443,84 @@ document.write(`
 <span class="go">│ 12746494                     ┆ 0                   ┆ 138823   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="go">│ 10613508                     ┆ 0                   ┆ 138823   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │</span>
 <span class="go">└──────────────────────────────┴─────────────────────┴──────────┴───────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="codalpy.Codal.etf_portfolio">
+<span class="sig-name descname"><span class="pre">etf_portfolio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.etf_portfolio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.etf_portfolio" title="Link to this definition">#</a></dt>
+<dd><div dir="rtl">
+    پورتفوی سهامِ صندوق‌هایِ ETF رو به صورتِ‌ ماهانه بهت میده.
+</div><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">codalpy</span> <span class="kn">import</span> <span class="n">Codal</span><span class="p">,</span> <span class="n">QueryParam</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">QueryParam</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;پتروآگاه&quot;</span><span class="p">,</span><span class="n">length</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;1403/01/01&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">letter_type</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">company_state</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">company_type</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;etf&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span><span class="o">.</span><span class="n">etf_portfolio</span><span class="p">()</span>
+<span class="go">shape: (368, 19)</span>
+<span class="go">┌───────────┬───────────┬───────────┬───────────┬───┬──────────┬───────────┬───────────┬───────────┐</span>
+<span class="go">│ name      ┆ volume_be ┆ total_cos ┆ net_proce ┆ … ┆ symbol   ┆ title     ┆ url       ┆ attachmen │</span>
+<span class="go">│ ---       ┆ g         ┆ t_beg     ┆ eds_beg   ┆   ┆ ---      ┆ ---       ┆ ---       ┆ t_url     │</span>
+<span class="go">│ str       ┆ ---       ┆ ---       ┆ ---       ┆   ┆ str      ┆ str       ┆ str       ┆ ---       │</span>
+<span class="go">│           ┆ i64       ┆ i64       ┆ i64       ┆   ┆          ┆           ┆           ┆ str       │</span>
+<span class="go">╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪══════════╪═══════════╪═══════════╪═══════════╡</span>
+<span class="go">│ ‫آريان     ┆ 6334379   ┆ 723873677 ┆ 907982617 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ كيميا تك  ┆           ┆ 10        ┆ 96        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫املاح      ┆ 5561313   ┆ 832807586 ┆ 110840874 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ ايران     ┆           ┆ 24        ┆ 912       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫املاح      ┆ 0         ┆ 0         ┆ 0         ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ ايران     ┆           ┆           ┆           ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│ (تقدم)    ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫ایرکا     ┆ 26608118  ┆ 614331682 ┆ 727104993 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ پارت صنعت ┆           ┆ 04        ┆ 70        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫تراكتور   ┆ 5000000   ┆ 477442656 ┆ 521876250 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ سازي      ┆           ┆ 00        ┆ 00        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ …         ┆ …         ┆ …         ┆ …         ┆ … ┆ …        ┆ …         ┆ …         ┆ …         │</span>
+<span class="go">│ ‫پديده     ┆ 15094056  ┆ 134574637 ┆ 156194204 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ شيمي قرن  ┆           ┆ 694       ┆ 678       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫پست بانك  ┆ 5570715   ┆ 516123082 ┆ 458510733 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ ايران     ┆           ┆ 64        ┆ 55        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫کشتیرانی  ┆ 633333    ┆ 105679909 ┆ 125346325 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ دریای خزر ┆           ┆ 66        ┆ 53        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫گ.س.وت.ص. ┆ 53000000  ┆ 100928530 ┆ 974139178 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ پتروشيمي  ┆           ┆ 916       ┆ 50        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│ خليج فارس ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">│ ‫گسترش     ┆ 40983555  ┆ 620900858 ┆ 657946200 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │</span>
+<span class="go">│ سوخت سبزز ┆           ┆ 25        ┆ 99        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │</span>
+<span class="go">│ اگرس(سهام ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │</span>
+<span class="go">│ ي عام…    ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │</span>
+<span class="go">│           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │</span>
+<span class="go">└───────────┴───────────┴───────────┴───────────┴───┴──────────┴───────────┴───────────┴───────────┘</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -557,7 +635,8 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#codalpy.QueryParam.model_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.symbol">
@@ -566,7 +645,7 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.category">
-<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.category" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.category" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -576,7 +655,7 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.letter_type">
-<span class="sig-name descname"><span class="pre">letter_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#codalpy.QueryParam.letter_type" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">letter_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#codalpy.QueryParam.letter_type" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -616,17 +695,17 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.auditor_ref">
-<span class="sig-name descname"><span class="pre">auditor_ref</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#codalpy.QueryParam.auditor_ref" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">auditor_ref</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#codalpy.QueryParam.auditor_ref" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.company_state">
-<span class="sig-name descname"><span class="pre">company_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.company_state" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">company_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.company_state" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.company_type">
-<span class="sig-name descname"><span class="pre">company_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.company_type" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">company_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#codalpy.QueryParam.company_type" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -636,7 +715,7 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="codalpy.QueryParam.tracing_no">
-<span class="sig-name descname"><span class="pre">tracing_no</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#codalpy.QueryParam.tracing_no" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">tracing_no</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#codalpy.QueryParam.tracing_no" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -716,6 +795,7 @@ __args__, __origin__, __parameters__ in typing-module generics. May eventually b
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.Codal.letter"><code class="docutils literal notranslate"><span class="pre">Codal.letter()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.Codal.income_statement"><code class="docutils literal notranslate"><span class="pre">Codal.income_statement()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.Codal.balance_sheet"><code class="docutils literal notranslate"><span class="pre">Codal.balance_sheet()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.Codal.etf_portfolio"><code class="docutils literal notranslate"><span class="pre">Codal.etf_portfolio()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#codalpy.QueryParam"><code class="docutils literal notranslate"><span class="pre">QueryParam</span></code></a><ul class="nav section-nav flex-column">
