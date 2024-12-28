@@ -283,7 +283,9 @@ class Codal:
                 attachment = requests.get(letter.attachment_url, headers=HEADERS)
                 xlsx_endpoint = etf.find_download_endpoint(attachment.text)
                 xlsx = requests.get(f"{self.base_url}/Reports/{xlsx_endpoint}", stream=True, headers=HEADERS)
-                raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=2)
+                raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=1, raise_if_empty=False)
+                if raw_df.is_empty() or raw_df.shape[1] < 9:
+                    raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=2)
                 clean_df = etf.clean_raw_df(raw_df)
                 clean_df = clean_df.with_columns(
                     [
