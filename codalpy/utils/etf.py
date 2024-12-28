@@ -36,8 +36,10 @@ def clean_raw_df(df: pl.DataFrame) -> pl.DataFrame:
     for row in df[values_idx:].transpose().rows():
         if cols:
             if idx == 0:
-                data[cols.pop()] = row
-                idx += 1
+                is_numeric = sum([is_number(str(i)) for i in row])
+                if is_numeric < 3:
+                    data[cols.pop()] = row
+                    idx += 1
             else:
                 is_numeric = sum([is_number(str(i)) for i in row])
                 if is_numeric > len(row) / 2:
@@ -45,7 +47,7 @@ def clean_raw_df(df: pl.DataFrame) -> pl.DataFrame:
                 idx += 1
 
     df = pl.DataFrame(data)
-    df = df.drop_nulls().with_columns([
+    df = df.drop_nulls().filter(pl.col("name").str.len_chars()>0).with_columns([
         pl.col(i).cast(pl.Float64).cast(pl.Int64) for i in df.columns[1:-1]
     ]).with_columns(
         pct_of_total_assets_end=pl.col("pct_of_total_assets_end").cast(pl.Float64),
