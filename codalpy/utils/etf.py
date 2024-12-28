@@ -85,8 +85,9 @@ def clean_raw_df(df: pl.DataFrame) -> pl.DataFrame:
     cols, jdate, head_idx = handle_cols(df).values()
     df = df[head_idx + 1:]
     df.columns = cols
-    df = df.drop_nulls()
-    df = df.select([i for i in cols if "del_" not in i])
+
+    df = df.select([i for i in cols if not i[-1].isnumeric()])
+    df = df.drop_nulls().filter(pl.col("volume_beg").map_elements(lambda x: x.isnumeric(), return_dtype=pl.Boolean))
     df = df.with_columns([
         pl.col(i).cast(pl.Float64).cast(pl.Int64) for i in df.columns[1:-1]
     ]).with_columns(
