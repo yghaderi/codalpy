@@ -6,8 +6,12 @@ from pydantic import BaseModel, ConfigDict, alias_generators
 @dataclass
 class Consts:
     base_url: str = "https://www.codal.ir"
-    search_url: str = "https://search.codal.ir"
-    api_endpoint: str = "api/search/v2/q"
+    base_search_url: str = "https://search.codal.ir"
+    api_endpoint: str = "/api/search/v2/q"
+
+    @property
+    def search_url(self):
+        return f"{self.base_search_url}{self.api_endpoint}"
 
 class Issuer(BaseModel):
     name: str

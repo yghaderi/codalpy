@@ -1,1 +1,2 @@
-from codalpy.codal import Codal, QueryParam
+from codalpy.utils.query import QueryParam
+from codalpy.fund import Fund

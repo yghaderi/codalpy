@@ -1,16 +1,12 @@
 from typing import Literal
-from io import BytesIO
 from urllib.parse import urlparse, parse_qs
 import re
-import requests
 
 import polars as pl
-from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
-
+from pydantic import BaseModel, ConfigDict, alias_generators
+from codalpy.utils.http import get
 from codalpy.utils.models import Letter, FinancialStatement, GetFinancialStatement
-from codalpy.utils.http import get, HEADERS
 from codalpy.utils.gen_df import clean_df
-from codalpy.utils import etf
 
 
 class QueryParam(BaseModel):
@@ -197,104 +193,3 @@ class Codal:
             if data.records:
                 df = clean_df(data.records, self._category, "BalanceSheet")
                 return df
-
-    def etf_portfolio(self):
-        """
-        .. raw:: html
-
-            <div dir="rtl">
-                پورتفوی سهامِ صندوق‌هایِ ETF رو به صورتِ‌ ماهانه بهت میده.
-            </div>
-
-        Returns
-        -------
-        polars.DataFrame
-
-        example
-        -------
-        >>> from codalpy import Codal, QueryParam
-        >>> query = QueryParam(symbol="پتروآگاه",length=-1, from_date="1403/01/01", category=3, letter_type=8, company_state=2, company_type=3)
-        >>> codal = Codal(query=query, category="etf")
-        >>> codal.etf_portfolio()
-        shape: (368, 19)
-        ┌───────────┬───────────┬───────────┬───────────┬───┬──────────┬───────────┬───────────┬───────────┐
-        │ name      ┆ volume_be ┆ total_cos ┆ net_proce ┆ … ┆ symbol   ┆ title     ┆ url       ┆ attachmen │
-        │ ---       ┆ g         ┆ t_beg     ┆ eds_beg   ┆   ┆ ---      ┆ ---       ┆ ---       ┆ t_url     │
-        │ str       ┆ ---       ┆ ---       ┆ ---       ┆   ┆ str      ┆ str       ┆ str       ┆ ---       │
-        │           ┆ i64       ┆ i64       ┆ i64       ┆   ┆          ┆           ┆           ┆ str       │
-        ╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪══════════╪═══════════╪═══════════╪═══════════╡
-        │ ‫آريان     ┆ 6334379   ┆ 723873677 ┆ 907982617 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ كيميا تك  ┆           ┆ 10        ┆ 96        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫املاح      ┆ 5561313   ┆ 832807586 ┆ 110840874 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ ايران     ┆           ┆ 24        ┆ 912       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫املاح      ┆ 0         ┆ 0         ┆ 0         ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ ايران     ┆           ┆           ┆           ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │ (تقدم)    ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫ایرکا     ┆ 26608118  ┆ 614331682 ┆ 727104993 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ پارت صنعت ┆           ┆ 04        ┆ 70        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫تراكتور   ┆ 5000000   ┆ 477442656 ┆ 521876250 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ سازي      ┆           ┆ 00        ┆ 00        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ …         ┆ …         ┆ …         ┆ …         ┆ … ┆ …        ┆ …         ┆ …         ┆ …         │
-        │ ‫پديده     ┆ 15094056  ┆ 134574637 ┆ 156194204 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ شيمي قرن  ┆           ┆ 694       ┆ 678       ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫پست بانك  ┆ 5570715   ┆ 516123082 ┆ 458510733 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ ايران     ┆           ┆ 64        ┆ 55        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫کشتیرانی  ┆ 633333    ┆ 105679909 ┆ 125346325 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ دریای خزر ┆           ┆ 66        ┆ 53        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫گ.س.وت.ص. ┆ 53000000  ┆ 100928530 ┆ 974139178 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ پتروشيمي  ┆           ┆ 916       ┆ 50        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │ خليج فارس ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        │ ‫گسترش     ┆ 40983555  ┆ 620900858 ┆ 657946200 ┆ … ┆ پتروآگاه ┆ صورت      ┆ https://c ┆ https://c │
-        │ سوخت سبزز ┆           ┆ 25        ┆ 99        ┆   ┆          ┆ وضعیت     ┆ odal.ir/R ┆ odal.ir/R │
-        │ اگرس(سهام ┆           ┆           ┆           ┆   ┆          ┆ پورتفوی   ┆ eports/At ┆ eports/At │
-        │ ي عام…    ┆           ┆           ┆           ┆   ┆          ┆ صندوق     ┆ tac…      ┆ tac…      │
-        │           ┆           ┆           ┆           ┆   ┆          ┆ سرمای…    ┆           ┆           │
-        └───────────┴───────────┴───────────┴───────────┴───┴──────────┴───────────┴───────────┴───────────┘
-        """
-        letters = self.letter()
-        df = pl.DataFrame()
-        for letter in letters:
-            if letter.has_attachment:
-                attachment = requests.get(letter.attachment_url, headers=HEADERS)
-                xlsx_endpoint = etf.find_download_endpoint(attachment.text)
-                xlsx = requests.get(f"{self.base_url}/Reports/{xlsx_endpoint}", stream=True, headers=HEADERS)
-                raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=1, raise_if_empty=False)
-                if raw_df.is_empty() or raw_df.shape[1] < 9:
-                    raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=2)
-                clean_df = etf.clean_raw_df(raw_df)
-                clean_df = clean_df.with_columns(
-                    [
-                        pl.lit(letter.publish_date_time).alias("publish_date_time"),
-                        pl.lit(letter.symbol).alias("symbol"),
-                        pl.lit(letter.title).alias("title"),
-                        pl.lit(letter.url).alias("url"),
-                        pl.lit(letter.attachment_url).alias("attachment_url"),
-                    ]
-                )
-                df = pl.concat([df, clean_df])
-        return df

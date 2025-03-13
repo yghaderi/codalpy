@@ -2,7 +2,7 @@ import polars as pl
 import re
 
 
-def clean_raw_df(df: pl.DataFrame) -> pl.DataFrame:
+def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
     values_idx = 0
     for row in df.rows():
         isnumeric_ = sum([str(i).isnumeric() for i in row])
@@ -55,7 +55,8 @@ def clean_raw_df(df: pl.DataFrame) -> pl.DataFrame:
     return df
 
 
-def find_download_endpoint(text: str) -> str:
+def find_download_endpoint(text: str) -> str|None:
     pattern = r"window\.open\(&#39;([^&#]+)&#39;"
     match = re.search(pattern, text)
-    return match.group(1)
+    if match:
+        return match.group(1)
