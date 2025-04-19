@@ -3,10 +3,10 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../codalpy"))
 
-project = 'codalpy'
-copyright = '2024, Yaghoub Ghaderi'
-author = 'Yaghoub Ghaderi'
-release = '0.2.0'
+project = "codalpy"
+copyright = "2024, Yaghoub Ghaderi"
+author = "Yaghoub Ghaderi"
+release = "0.2.0"
 
 extensions = [
     "sphinx.ext.napoleon",

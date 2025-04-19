@@ -1,4 +1,5 @@
 from typing import ClassVar
+
 from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
 
 from codalpy.utils.utils import norm_char

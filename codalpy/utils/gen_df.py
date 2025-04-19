@@ -1,13 +1,11 @@
 from typing import Literal
+
 import polars as pl
-from codalpy.utils.models import FinancialStatement, Cell, Letter
-from codalpy.utils.utils import (
-    translate,
-    fiscal_month,
-    pascal_to_snake_case,
-    normalize_fs_item,
-)
+
 from codalpy.utils import cols, dicts
+from codalpy.utils.models import Cell, FinancialStatement, Letter
+from codalpy.utils.utils import (fiscal_month, normalize_fs_item,
+                                 pascal_to_snake_case, translate)
 
 
 def _cells(

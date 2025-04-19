@@ -1,5 +1,6 @@
-from typing import Literal
 from dataclasses import dataclass
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, alias_generators
 
 
@@ -13,14 +14,16 @@ class Consts:
     def search_url(self):
         return f"{self.base_search_url}{self.api_endpoint}"
 
+
 class Issuer(BaseModel):
     name: str
     symbol: str
 
+
 class Symbol:
-    def __init__(self, symbol: str, issuers:list[Issuer]):
+    def __init__(self, symbol: str, issuers: list[Issuer]):
         self.symbol = symbol
-        self.issuers= issuers
+        self.issuers = issuers
 
     @staticmethod
     def normalize_symbol(w: str) -> str:

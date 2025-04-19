@@ -1,5 +1,6 @@
-import jdatetime as jdt
 import re
+
+import jdatetime as jdt
 
 
 def norm_char(w: str) -> str:

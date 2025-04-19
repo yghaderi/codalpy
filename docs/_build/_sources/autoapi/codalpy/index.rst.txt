@@ -383,6 +383,3 @@ Package Contents
    .. py:attribute:: from_date
       :type:  str
       :value: '1396/01/01'
-
-
-

@@ -1,5 +1,6 @@
-import polars as pl
 import re
+
+import polars as pl
 
 
 def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
@@ -9,19 +10,21 @@ def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
         values_idx += 1
         if isnumeric_ > 4:
             break
-    cols = ['name',
-            'volume_beg',
-            'total_cost_beg',
-            'net_proceeds_beg',
-            'volume_pop',
-            'total_cost_pop',
-            'volume_sop',
-            'sale_amount_sop',
-            'volume_end',
-            'price_end',
-            'total_cost_end',
-            'net_proceeds_end',
-            'pct_of_total_assets_end']
+    cols = [
+        "name",
+        "volume_beg",
+        "total_cost_beg",
+        "net_proceeds_beg",
+        "volume_pop",
+        "total_cost_pop",
+        "volume_sop",
+        "sale_amount_sop",
+        "volume_end",
+        "price_end",
+        "total_cost_end",
+        "net_proceeds_end",
+        "pct_of_total_assets_end",
+    ]
     cols.reverse()
     data = {}
     idx = 0
@@ -47,15 +50,20 @@ def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
                 idx += 1
 
     df = pl.DataFrame(data)
-    df = df.drop_nulls().filter(pl.col("name").str.len_chars()>0).with_columns([
-        pl.col(i).cast(pl.Float64).cast(pl.Int64) for i in df.columns[1:-1]
-    ]).with_columns(
-        pct_of_total_assets_end=pl.col("pct_of_total_assets_end").cast(pl.Float64),
+    df = (
+        df.drop_nulls()
+        .filter(pl.col("name").str.len_chars() > 0)
+        .with_columns(
+            [pl.col(i).cast(pl.Float64).cast(pl.Int64) for i in df.columns[1:-1]]
+        )
+        .with_columns(
+            pct_of_total_assets_end=pl.col("pct_of_total_assets_end").cast(pl.Float64),
+        )
     )
     return df
 
 
-def find_download_endpoint(text: str) -> str|None:
+def find_download_endpoint(text: str) -> str | None:
     pattern = r"window\.open\(&#39;([^&#]+)&#39;"
     match = re.search(pattern, text)
     if match:

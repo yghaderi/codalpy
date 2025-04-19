@@ -1,14 +1,14 @@
-from pathlib import Path
-from io import BytesIO
 import json
+from io import BytesIO
+from pathlib import Path
 
-import requests
 import polars as pl
+import requests
 
-from codalpy.utils.query import QueryParam, Consts, Symbol, Issuer
-from codalpy.utils.models import Letter
+from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.http import HEADERS
-from codalpy.utils.fund import find_download_endpoint, clean_raw_portfolio_df
+from codalpy.utils.models import Letter
+from codalpy.utils.query import Consts, Issuer, QueryParam, Symbol
 
 
 class Fund:
@@ -103,11 +103,11 @@ class Fund:
                     raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=2)
                 clean_df = clean_raw_portfolio_df(raw_df)
                 clean_df = clean_df.with_columns(
-                       publish_date_time =  pl.lit(letter.publish_date_time),
-                        symbol = pl.lit(letter.symbol),
-                        title = pl.lit(letter.title),
-                        url = pl.lit(letter.url),
-                       attachment_url= pl.lit(letter.attachment_url),
+                    publish_date_time=pl.lit(letter.publish_date_time),
+                    symbol=pl.lit(letter.symbol),
+                    title=pl.lit(letter.title),
+                    url=pl.lit(letter.url),
+                    attachment_url=pl.lit(letter.attachment_url),
                 )
                 df = pl.concat([df, clean_df])
         return df

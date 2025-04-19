@@ -1,12 +1,14 @@
-from typing import Literal
-from urllib.parse import urlparse, parse_qs
 import re
+from typing import Literal
+from urllib.parse import parse_qs, urlparse
 
 import polars as pl
 from pydantic import BaseModel, ConfigDict, alias_generators
-from codalpy.utils.http import get
-from codalpy.utils.models import Letter, FinancialStatement, GetFinancialStatement
+
 from codalpy.utils.gen_df import clean_df
+from codalpy.utils.http import get
+from codalpy.utils.models import (FinancialStatement, GetFinancialStatement,
+                                  Letter)
 
 
 class QueryParam(BaseModel):
@@ -17,7 +19,9 @@ class QueryParam(BaseModel):
     symbol: str
     category: Literal[1, 3] = 1  # گروه اطلاعیه --> اطلاعات و صورت مالی سالانه
     publisher_type: Literal[1] = 1  # نوع شرکت --> ناشران
-    letter_type: Literal[6, 8] = 6  # نوع اطلاعیه --> اطلاعات و صورتهای مالی میاندوره ای ok
+    letter_type: Literal[6, 8] = (
+        6  # نوع اطلاعیه --> اطلاعات و صورتهای مالی میاندوره ای ok
+    )
     length: Literal[-1, 3, 6, 9, 12]  # طول دوره
     audited: bool = True  # حسابرسی شده
     not_audited: bool = True  # حسابرسی نشده
@@ -36,7 +40,9 @@ class QueryParam(BaseModel):
 
 
 class Codal:
-    def __init__(self, query: QueryParam, category: Literal["production", "etf"]) -> None:
+    def __init__(
+        self, query: QueryParam, category: Literal["production", "etf"]
+    ) -> None:
         self.base_url = "https://codal.ir"
         self.search_url = "https://search.codal.ir/api/search/v2/q?"
         self.api = "api/search/v2/q"
@@ -79,7 +85,7 @@ class Codal:
             return letters
 
     def _get_financial_statement(
-            self, sheet_id: Literal["0", "1"]
+        self, sheet_id: Literal["0", "1"]
     ) -> GetFinancialStatement | None:
         letters = self.letter()
         if letters is not None:
