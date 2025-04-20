@@ -1,6 +1,4 @@
-import json
 from io import BytesIO
-from pathlib import Path
 
 import polars as pl
 import requests
@@ -8,58 +6,52 @@ import requests
 from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.http import HEADERS
 from codalpy.utils.models import Letter
-from codalpy.utils.query import Consts, Issuer, QueryParam, Symbol
+from codalpy.utils.query import Consts, QueryParam
 
 
 class Fund:
-    def __init__(self, query: QueryParam):
-        self._query = query
-        self.consts = Consts()
-        self.funds: list[Issuer] = []
+    def __init__(self, symbol: str, jdate: str):
+        self._symbol = symbol
+        self._jdate = jdate
+        self._query = QueryParam(symbol=self.symbol,length=-1, from_date=self.jdate, category=3, letter_type=8, company_state=2, company_type=3)
+        self._consts = Consts()
 
     @property
-    def query(self):
-        return self._query
+    def symbol(self):
+        return self._symbol
 
-    @query.setter
-    def query(self, value: QueryParam):
-        self._query = value
+    @symbol.setter
+    def symbol(self, value: str):
+        self._query  = QueryParam.model_validate({**self._query.dict(), "symbol": value})
+        self._symbol = value
 
-    def load_funds(self):
-        pkg_dir = Path(__file__).parent
-        json_path = pkg_dir / "data/symbols.json"
-        with open(json_path) as f:
-            d = json.load(f).get("funds")
-            assert d is not None, "Funds data not found"
-            self.funds = [Issuer.model_validate(i) for i in d]
+    @property
+    def jdate(self):
+        return self._jdate
 
-    def handle_symbol(self) -> Issuer:
-        if not self.funds:
-            self.load_funds()
-
-        symbol = Symbol(symbol=self.query.symbol, issuers=self.funds)
-        fund = symbol.match_symbol()
-        self.query.symbol = fund.symbol
-        return fund
+    @jdate.setter
+    def jdate(self, value: str):
+        self._query.from_date = value
+        self._jdate = value
 
     def letter(self) -> list[Letter]:
         r = requests.get(
-            url=self.consts.search_url,
-            params=self.query.model_dump(by_alias=True),
+            url=self._consts.search_url,
+            params=self._query.model_dump(by_alias=True),
             headers=HEADERS,
         )
         data: dict = r.json()
         pages = str(data.get("Page"))
-        Letter.base_url = self.consts.base_url
+        Letter.base_url = self._consts.base_url
         letters = [Letter.model_validate(i) for i in data["Letters"]]
         if pages.isdigit():
             pages = int(pages)
             if pages > 1:
                 for p in range(2, pages + 1):
-                    self.query.page_number = p
+                    self._query.page_number = p
                     r = requests.get(
-                        url=self.consts.search_url,
-                        params=self.query.model_dump(by_alias=True),
+                        url=self._consts.search_url,
+                        params=self._query.model_dump(by_alias=True),
                         headers=HEADERS,
                     )
                     data: dict = r.json()
@@ -92,7 +84,7 @@ class Fund:
                 attachment = requests.get(letter.attachment_url, headers=HEADERS)
                 xlsx_endpoint = find_download_endpoint(attachment.text)
                 xlsx = requests.get(
-                    f"{self.consts.base_url}/Reports/{xlsx_endpoint}",
+                    f"{self._consts.base_url}/Reports/{xlsx_endpoint}",
                     stream=True,
                     headers=HEADERS,
                 )
