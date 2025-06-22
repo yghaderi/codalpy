@@ -10,10 +10,18 @@ from codalpy.utils.query import Consts, QueryParam
 
 
 class Fund:
-    def __init__(self, symbol: str, jdate: str):
+    def __init__(self, symbol: str, jdate_from: str):
         self._symbol = symbol
-        self._jdate = jdate
-        self._query = QueryParam(symbol=self.symbol,length=-1, from_date=self.jdate, category=3, letter_type=8, company_state=2, company_type=3)
+        self._jdate_from = jdate_from
+        self._query = QueryParam(
+            symbol=self.symbol,
+            length=-1,
+            from_date=self._jdate_from,
+            category=3,
+            letter_type=8,
+            company_state=2,
+            company_type=3,
+        )
         self._consts = Consts()
 
     @property
@@ -22,17 +30,17 @@ class Fund:
 
     @symbol.setter
     def symbol(self, value: str):
-        self._query  = QueryParam.model_validate({**self._query.dict(), "symbol": value})
+        self._query = QueryParam.model_validate({**self._query.dict(), "symbol": value})
         self._symbol = value
 
     @property
     def jdate(self):
-        return self._jdate
+        return self._jdate_from
 
     @jdate.setter
     def jdate(self, value: str):
         self._query.from_date = value
-        self._jdate = value
+        self._jdate_from = value
 
     def letter(self) -> list[Letter]:
         r = requests.get(
@@ -72,7 +80,7 @@ class Fund:
 
         example
         -------
-        >>> from codalpy import Codal, QueryParam
+        >>> from codalpy import Fund
         >>> query = QueryParam(symbol="پتروآگاه",length=-1, from_date="1403/01/01", category=3, letter_type=8, company_state=2, company_type=3)
         >>> codal = Codal(query=query, category="etf")
         >>> codal.etf_portfolio()
@@ -88,11 +96,21 @@ class Fund:
                     stream=True,
                     headers=HEADERS,
                 )
+
                 raw_df = pl.read_excel(
-                    BytesIO(xlsx.content), sheet_id=1, raise_if_empty=False
+                    BytesIO(xlsx.content),
+                    sheet_id=1,
+                    raise_if_empty=False,
+                    infer_schema_length=0,
                 )
                 if raw_df.is_empty() or raw_df.shape[1] < 9:
-                    raw_df = pl.read_excel(BytesIO(xlsx.content), sheet_id=2)
+                    raw_df = pl.read_excel(
+                        BytesIO(xlsx.content),
+                        has_header=False,
+                        sheet_id=2,
+                        raise_if_empty=False,
+                        infer_schema_length=0,
+                    )
                 clean_df = clean_raw_portfolio_df(raw_df)
                 clean_df = clean_df.with_columns(
                     publish_date_time=pl.lit(letter.publish_date_time),

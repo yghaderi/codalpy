@@ -2,8 +2,7 @@ from typing import Any, Literal
 
 import requests
 from pydantic import BaseModel
-from requests.exceptions import (ConnectionError, HTTPError, RequestException,
-                                 Timeout)
+from requests.exceptions import ConnectionError, HTTPError, RequestException, Timeout
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",

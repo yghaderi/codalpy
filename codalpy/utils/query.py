@@ -1,10 +1,12 @@
-from dataclasses import dataclass
-from typing import Literal
-from pathlib import Path
 import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, alias_generators
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
-from pydantic import BaseModel, ConfigDict, alias_generators
+
 
 @dataclass
 class Consts:
@@ -26,7 +28,7 @@ class Symbol:
     def __init__(self):
         self.issuers = self.load_funds()
 
-    def load_funds(self)-> list[Issuer]:
+    def load_funds(self) -> list[Issuer]:
         pkg_dir = Path(__file__).parent
         json_path = pkg_dir / "data/symbols.json"
         with open(json_path) as f:
@@ -47,7 +49,7 @@ class Symbol:
         }
         return w.translate(str.maketrans(dict_))
 
-    def validate_symbol(self, symbol:str) -> str:
+    def validate_symbol(self, symbol: str) -> str:
         item = next(
             filter(
                 lambda x: self.normalize_symbol(x.symbol)
@@ -61,13 +63,12 @@ class Symbol:
         return item.symbol
 
 
-
 class QueryParam(BaseModel):
     model_config = ConfigDict(
         alias_generator=alias_generators.to_pascal, populate_by_name=True
     )
 
-    symbol: Annotated[str,BeforeValidator(Symbol().validate_symbol)]
+    symbol: Annotated[str, BeforeValidator(Symbol().validate_symbol)]
     category: Literal[1, 3] = 1  # گروه اطلاعیه --> اطلاعات و صورت مالی سالانه
     publisher_type: Literal[1] = 1  # نوع شرکت --> ناشران
     letter_type: Literal[6, 8] = (

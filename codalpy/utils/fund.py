@@ -48,7 +48,6 @@ def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
                 if is_numeric > len(row) / 2:
                     data[cols.pop()] = row
                 idx += 1
-
     df = pl.DataFrame(data)
     df = (
         df.drop_nulls()
