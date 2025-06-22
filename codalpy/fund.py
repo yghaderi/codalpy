@@ -111,6 +111,7 @@ class Fund:
                         raise_if_empty=False,
                         infer_schema_length=0,
                     )
+                print(raw_df)
                 clean_df = clean_raw_portfolio_df(raw_df)
                 clean_df = clean_df.with_columns(
                     publish_date_time=pl.lit(letter.publish_date_time),
