@@ -1,11 +1,11 @@
-import json
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, alias_generators
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
+
+from codalpy.utils.data import symbols
 
 
 @dataclass
@@ -29,12 +29,7 @@ class Symbol:
         self.issuers = self.load_funds()
 
     def load_funds(self) -> list[Issuer]:
-        pkg_dir = Path(__file__).parent
-        json_path = pkg_dir / "data/symbols.json"
-        with open(json_path) as f:
-            d = json.load(f).get("funds")
-            assert d is not None, "Funds data not found"
-            return [Issuer.model_validate(i) for i in d]
+        return [Issuer.model_validate(i) for i in symbols.get("funds", [])]
 
     @staticmethod
     def normalize_symbol(w: str) -> str:

@@ -3,6 +3,7 @@ from io import BytesIO
 import polars as pl
 import requests
 
+from codalpy.utils.data import symbols
 from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.http import HEADERS
 from codalpy.utils.models import Letter
@@ -30,7 +31,9 @@ class Fund:
 
     @symbol.setter
     def symbol(self, value: str):
-        self._query = QueryParam.model_validate({**self._query.dict(), "symbol": value})
+        self._query = QueryParam.model_validate(
+            {**self._query.model_dump(), "symbol": value}
+        )
         self._symbol = value
 
     @property
@@ -66,6 +69,26 @@ class Fund:
                     letters.extend([Letter.model_validate(i) for i in data["Letters"]])
         return letters
 
+    @staticmethod
+    def supported_funds():
+        """
+        .. raw:: html
+
+            <div dir="rtl">
+                اسم و نمادِ صندوق‌هایی که پشتیبانی میشه رو بهت میده.
+            </div>
+
+        Returns
+        -------
+        list[dict[str, str]]
+
+        example
+        -------
+        >>> from codalpy import Fund
+        >>> Fund.supported_funds()
+        """
+        return symbols.get("funds")
+
     def monthly_portfolio(self):
         """
         .. raw:: html
@@ -84,23 +107,23 @@ class Fund:
         >>> fund = Fund(symbol="شتاب", jdate_from="1404/01/01")
         >>> fund.monthly_portfolio()
         shape: (760, 18)
-┌─────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
-│ name                        ┆ volume_beg ┆ total_cost_beg ┆ net_proceeds_beg ┆ … ┆ symbol ┆ title                           ┆ url                             ┆ attachment_url                  │
-│ ---                         ┆ ---        ┆ ---            ┆ ---              ┆   ┆ ---    ┆ ---                             ┆ ---                             ┆ ---                             │
-│ str                         ┆ i64        ┆ i64            ┆ i64              ┆   ┆ str    ┆ str                             ┆ str                             ┆ str                             │
-╞═════════════════════════════╪════════════╪════════════════╪══════════════════╪═══╪════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
-│ آهن و فولاد غدیر ایرانیان    ┆ 4556339    ┆ 31093465496    ┆ 24367250852      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ البرزدارو                   ┆ 26671574   ┆ 80704956520    ┆ 99052112711      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ انتقال داده های آسیاتک      ┆ 138080161  ┆ 557028375688   ┆ 521719877943     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ ایران خودرو دیزل            ┆ 207374030  ┆ 349859951641   ┆ 321990921362     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ ایران‌ خودرو                 ┆ 730831581  ┆ 291639316957   ┆ 422086700327     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ …                           ┆ …          ┆ …              ┆ …                ┆ … ┆ …      ┆ …                               ┆ …                               ┆ …                               │
-│ مهرمام میهن                 ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ سرمایه گذاری گروه توسعه ملی ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ اختیارخ فزر-38000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ اختیارخ فزر-36000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-│ گروه دارویی سبحان           ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-└─────────────────────────────┴────────────┴────────────────┴──────────────────┴───┴────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+        ┌─────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
+        │ name                        ┆ volume_beg ┆ total_cost_beg ┆ net_proceeds_beg ┆ … ┆ symbol ┆ title                           ┆ url                             ┆ attachment_url                  │
+        │ ---                         ┆ ---        ┆ ---            ┆ ---              ┆   ┆ ---    ┆ ---                             ┆ ---                             ┆ ---                             │
+        │ str                         ┆ i64        ┆ i64            ┆ i64              ┆   ┆ str    ┆ str                             ┆ str                             ┆ str                             │
+        ╞═════════════════════════════╪════════════╪════════════════╪══════════════════╪═══╪════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
+        │ آهن و فولاد غدیر ایرانیان    ┆ 4556339    ┆ 31093465496    ┆ 24367250852      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ البرزدارو                   ┆ 26671574   ┆ 80704956520    ┆ 99052112711      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ انتقال داده های آسیاتک      ┆ 138080161  ┆ 557028375688   ┆ 521719877943     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ ایران خودرو دیزل            ┆ 207374030  ┆ 349859951641   ┆ 321990921362     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ ایران‌ خودرو                 ┆ 730831581  ┆ 291639316957   ┆ 422086700327     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ …                           ┆ …          ┆ …              ┆ …                ┆ … ┆ …      ┆ …                               ┆ …                               ┆ …                               │
+        │ مهرمام میهن                 ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ سرمایه گذاری گروه توسعه ملی ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ اختیارخ فزر-38000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ اختیارخ فزر-36000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ گروه دارویی سبحان           ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        └─────────────────────────────┴────────────┴────────────────┴──────────────────┴───┴────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
         """
         letters = self.letter()
         df = pl.DataFrame()
