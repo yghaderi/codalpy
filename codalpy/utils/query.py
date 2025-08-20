@@ -22,6 +22,7 @@ class Consts:
 class Issuer(BaseModel):
     name: str
     symbol: str
+    alias: str
 
 
 class Symbol:
@@ -55,7 +56,7 @@ class Symbol:
         )
         if item == None:
             raise ValueError("Symbol not found or invalid or not supported yet.")
-        return item.symbol
+        return item.alias
 
 
 class QueryParam(BaseModel):

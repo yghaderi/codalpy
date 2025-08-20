@@ -4,12 +4,8 @@ import polars as pl
 
 from codalpy.utils import cols, dicts
 from codalpy.utils.models import Cell, FinancialStatement, Letter
-from codalpy.utils.utils import (
-    fiscal_month,
-    normalize_fs_item,
-    pascal_to_snake_case,
-    translate,
-)
+from codalpy.utils.utils import (fiscal_month, normalize_fs_item,
+                                 pascal_to_snake_case, translate)
 
 
 def _cells(

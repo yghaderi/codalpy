@@ -8,6 +8,7 @@ from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.http import HEADERS
 from codalpy.utils.models import Letter
 from codalpy.utils.query import Consts, QueryParam
+from codalpy.utils.utils import normalize_fs_item
 
 
 class Fund:
@@ -24,6 +25,7 @@ class Fund:
             company_type=3,
         )
         self._consts = Consts()
+        self._alias: str = ""
 
     @property
     def symbol(self):
@@ -70,7 +72,7 @@ class Fund:
         return letters
 
     @staticmethod
-    def supported_funds():
+    def supported_funds() -> list[dict[str, str]]:
         """
         .. raw:: html
 
@@ -87,9 +89,9 @@ class Fund:
         >>> from codalpy import Fund
         >>> Fund.supported_funds()
         """
-        return symbols.get("funds")
+        return symbols.get("funds", [])
 
-    def monthly_portfolio(self):
+    def monthly_portfolio(self) -> pl.DataFrame:
         """
         .. raw:: html
 
@@ -131,33 +133,44 @@ class Fund:
             if letter.has_attachment:
                 attachment = requests.get(letter.attachment_url, headers=HEADERS)
                 xlsx_endpoint = find_download_endpoint(attachment.text)
-                xlsx = requests.get(
-                    f"{self._consts.base_url}/Reports/{xlsx_endpoint}",
-                    stream=True,
-                    headers=HEADERS,
-                )
+                endpoint = ""
+                if len(xlsx_endpoint) > 1:
+                    for i in xlsx_endpoint:
+                        if normalize_fs_item(self._symbol) in normalize_fs_item(
+                            i["description"]
+                        ):
+                            endpoint = i["link"]
+                            break
+                elif len(xlsx_endpoint) == 1:
+                    endpoint = xlsx_endpoint[0]["link"]
+                if endpoint:
+                    xlsx = requests.get(
+                        f"{self._consts.base_url}/Reports/{endpoint}",
+                        stream=True,
+                        headers=HEADERS,
+                    )
 
-                raw_df = pl.read_excel(
-                    BytesIO(xlsx.content),
-                    sheet_id=1,
-                    raise_if_empty=False,
-                    infer_schema_length=0,
-                )
-                if raw_df.is_empty() or raw_df.shape[1] < 9:
                     raw_df = pl.read_excel(
                         BytesIO(xlsx.content),
-                        has_header=False,
-                        sheet_id=2,
+                        sheet_id=1,
                         raise_if_empty=False,
                         infer_schema_length=0,
                     )
-                clean_df = clean_raw_portfolio_df(raw_df)
-                clean_df = clean_df.with_columns(
-                    publish_date_time=pl.lit(letter.publish_date_time),
-                    symbol=pl.lit(letter.symbol),
-                    title=pl.lit(letter.title),
-                    url=pl.lit(letter.url),
-                    attachment_url=pl.lit(letter.attachment_url),
-                )
-                df = pl.concat([df, clean_df])
+                    if raw_df.is_empty() or raw_df.shape[1] < 9:
+                        raw_df = pl.read_excel(
+                            BytesIO(xlsx.content),
+                            has_header=False,
+                            sheet_id=2,
+                            raise_if_empty=False,
+                            infer_schema_length=0,
+                        )
+                    clean_df = clean_raw_portfolio_df(raw_df)
+                    clean_df = clean_df.with_columns(
+                        publish_date_time=pl.lit(letter.publish_date_time),
+                        symbol=pl.lit(self._symbol),
+                        title=pl.lit(letter.title),
+                        url=pl.lit(letter.url),
+                        attachment_url=pl.lit(letter.attachment_url),
+                    )
+                    df = pl.concat([df, clean_df])
         return df

@@ -7,7 +7,8 @@ from pydantic import BaseModel, ConfigDict, alias_generators
 
 from codalpy.utils.gen_df import clean_df
 from codalpy.utils.http import get
-from codalpy.utils.models import FinancialStatement, GetFinancialStatement, Letter
+from codalpy.utils.models import (FinancialStatement, GetFinancialStatement,
+                                  Letter)
 
 
 class QueryParam(BaseModel):

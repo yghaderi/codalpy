@@ -1,6 +1,7 @@
 import re
 
 import polars as pl
+from bs4 import BeautifulSoup
 
 
 def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
@@ -62,8 +63,27 @@ def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
     return df
 
 
-def find_download_endpoint(text: str) -> str | None:
-    pattern = r"window\.open\(&#39;([^&#]+)&#39;"
-    match = re.search(pattern, text)
-    if match:
-        return match.group(1)
+def find_download_endpoint(html: str) -> list[dict[str, str]]:
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.find("table", {"id": "dgAttachmentList"})
+    rows = table.find_all("tr")[1:]
+    data = []
+    for row in rows:
+        onclick = row.get("onclick", "")
+        link = None
+        if "window.open" in onclick:
+            link = onclick.split("'")[1]  # متن داخل window.open('...')
+
+        tds = row.find_all("td")
+        description = tds[1].get_text(strip=True) if len(tds) > 1 else ""
+        date_added = tds[2].get_text(strip=True) if len(tds) > 2 else ""
+
+        data.append(
+            {"link": link, "description": description, "date_added": date_added}
+        )
+    return data
+
+
+from codalpy import Fund
+fund = Fund(symbol="استیل", jdate_from="1404/05/01")
+fund.monthly_portfolio()
