@@ -1,5 +1,3 @@
-import re
-
 import polars as pl
 from bs4 import BeautifulSoup
 
@@ -85,5 +83,6 @@ def find_download_endpoint(html: str) -> list[dict[str, str]]:
 
 
 from codalpy import Fund
+
 fund = Fund(symbol="استیل", jdate_from="1404/05/01")
 fund.monthly_portfolio()
