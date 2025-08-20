@@ -80,9 +80,3 @@ def find_download_endpoint(html: str) -> list[dict[str, str]]:
             {"link": link, "description": description, "date_added": date_added}
         )
     return data
-
-
-from codalpy import Fund
-
-fund = Fund(symbol="استیل", jdate_from="1404/05/01")
-fund.monthly_portfolio()

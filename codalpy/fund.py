@@ -10,6 +10,8 @@ from codalpy.utils.models import Letter
 from codalpy.utils.query import Consts, QueryParam
 from codalpy.utils.utils import normalize_fs_item
 
+__all__ = ["Fund"]
+
 
 class Fund:
     def __init__(self, symbol: str, jdate_from: str):
@@ -25,7 +27,6 @@ class Fund:
             company_type=3,
         )
         self._consts = Consts()
-        self._alias: str = ""
 
     @property
     def symbol(self):
