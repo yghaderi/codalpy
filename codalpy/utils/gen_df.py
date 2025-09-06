@@ -3,13 +3,10 @@ from typing import Literal
 import polars as pl
 
 from codalpy.utils import cols, dicts
+from codalpy.utils.issuer import IssuerCategory
 from codalpy.utils.models import Cell, FinancialStatement, Letter
-from codalpy.utils.utils import (
-    fiscal_month,
-    normalize_fs_item,
-    pascal_to_snake_case,
-    translate,
-)
+from codalpy.utils.utils import (fiscal_month, normalize_fs_item,
+                                 pascal_to_snake_case, translate)
 
 
 def _cells(
@@ -44,11 +41,16 @@ def cells_to_df(cells: list[Cell]) -> pl.DataFrame:
 
 def clean_df(
     records: list[tuple[Letter, FinancialStatement]],
-    category: Literal["production"],
+    category: IssuerCategory,
     fs: Literal["BalanceSheet", "IncomeStatement"],
 ) -> pl.DataFrame | None:
     snake_fs = pascal_to_snake_case(fs)
     df_concat = pl.DataFrame()
+    dicts_key = ""
+    match category:
+        case IssuerCategory.MANUFACTURING:
+            dicts_key = "manufacturing"
+
     for letter, data in records:
         cells = _cells(data, fs)
         if cells is not None:
@@ -56,12 +58,12 @@ def clean_df(
             df = df.filter(pl.col("value") != "")
             df = df.with_columns(
                 pl.struct(["item"]).map_elements(
-                    lambda x: translate(x["item"], dicts.dicts[snake_fs][category]),
+                    lambda x: translate(x["item"], dicts.dicts[snake_fs][dicts_key]),
                     return_dtype=pl.String,
                 )
             )
             df = df.filter(
-                pl.col("item").is_in(dicts.dicts[snake_fs][category].values())
+                pl.col("item").is_in(dicts.dicts[snake_fs][dicts_key].values())
             ).with_columns([pl.col("value").cast(pl.Int64), pl.lit(0).alias("index")])
             df = df.pivot(
                 values="value",
@@ -69,12 +71,12 @@ def clean_df(
                 index="index",
                 aggregate_function="sum",
             )
-            miss_cols = set(cols.select[snake_fs][category]) - set(df.columns)
+            miss_cols = set(cols.select[snake_fs][dicts_key]) - set(df.columns)
             if miss_cols:
                 df = df.with_columns(
                     [pl.lit(0).cast(pl.Int64).alias(i) for i in miss_cols]
                 )
-            df = df.select(cols.select[snake_fs][category])
+            df = df.select(cols.select[snake_fs][dicts_key])
             df = df.with_columns(
                 [
                     pl.lit(data.is_audited).alias("is_audited"),

@@ -1,6 +1,6 @@
 dicts = {
     "income_statement": {
-        "production": {
+        "manufacturing": {
             "درآمدهاي عملياتي": "sales",
             "بهاى تمام شده درآمدهاي عملياتي": "cost_of_sales",
             "سود(زيان) ناخالص": "gross_profit",
@@ -28,7 +28,7 @@ dicts = {
         }
     },
     "balance_sheet": {
-        "production": {
+        "manufacturing": {
             "دارايي‌هاي ثابت مشهود": "property_plant_and_equipment",
             "سرمايه‌گذاري در املاک": "investment_property",
             "دارايي‌هاي نامشهود": "goodwill",

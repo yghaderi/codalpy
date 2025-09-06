@@ -1,6 +1,7 @@
-from typing import ClassVar
+from typing import ClassVar, Optional
 
-from pydantic import BaseModel, ConfigDict, alias_generators, field_validator
+from pydantic import (BaseModel, ConfigDict, Field, alias_generators,
+                      field_validator)
 
 from codalpy.utils.utils import norm_char
 
@@ -117,3 +118,28 @@ class GetFinancialStatement(BaseModel):
     get_error: list[Letter]
     match_error: list[tuple[Letter, str]]
     validation_error: list[tuple[Letter, str]]
+
+
+class DataSource(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=alias_generators.to_camel, populate_by_name=True
+    )
+    title_fa: str = Field(alias="title_Fa")
+    title_en: str = Field(alias="title_En")
+    subject: Optional[str]
+    dsc: Optional[str]
+    type: int
+    period: int
+    period_end_to_date: str
+    year_end_to_date: str
+    period_extra_day: int
+    isConsolidated: bool
+    tracing_no: int
+    kind: int
+    is_audited: bool
+    audit_state: int
+    register_date_time: str
+    sent_date_time: str
+    publish_date_time: str
+    state: int
+    is_for_auditing: bool

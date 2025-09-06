@@ -1,5 +1,8 @@
+from typing import cast
+
 import polars as pl
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 
 def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
@@ -64,19 +67,20 @@ def clean_raw_portfolio_df(df: pl.DataFrame) -> pl.DataFrame:
 def find_download_endpoint(html: str) -> list[dict[str, str]]:
     soup = BeautifulSoup(html, "html.parser")
     table = soup.find("table", {"id": "dgAttachmentList"})
-    rows = table.find_all("tr")[1:]
     data = []
-    for row in rows:
-        onclick = row.get("onclick", "")
-        link = None
-        if "window.open" in onclick:
-            link = onclick.split("'")[1]  # متن داخل window.open('...')
+    if isinstance(table, Tag):
+        rows = table.find_all("tr")[1:]
+        for row in rows:
+            if isinstance(row, Tag):
+                onclick = cast(str, row.get("onclick") or "")
+                link = None
+                if "window.open" in onclick:
+                    link = onclick.split("'")[1]  # متن داخل window.open('...')
+                tds = row.find_all("td")
+                description = tds[1].get_text(strip=True) if len(tds) > 1 else ""
+                date_added = tds[2].get_text(strip=True) if len(tds) > 2 else ""
 
-        tds = row.find_all("td")
-        description = tds[1].get_text(strip=True) if len(tds) > 1 else ""
-        date_added = tds[2].get_text(strip=True) if len(tds) > 2 else ""
-
-        data.append(
-            {"link": link, "description": description, "date_added": date_added}
-        )
+                data.append(
+                    {"link": link, "description": description, "date_added": date_added}
+                )
     return data

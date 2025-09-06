@@ -1,4 +1,3 @@
-from codalpy.codal import Codal, QueryParam
-from codalpy.fund import Fund
+from codalpy.codal import Codal
 
-__all__ = ["Codal", "Fund", "QueryParam"]
+__all__ = ["Codal"]
