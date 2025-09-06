@@ -80,17 +80,23 @@ class Codal:
         .. raw:: html
 
             <div dir="rtl">
-                اسم و نمادِ صندوق‌هایی که پشتیبانی میشه رو بهت میده.
+ناشرهایی که پشتیبانی میشه رو بهت میده.
             </div>
+
+        Parameters
+        ----------
+        cagegory : list[IssuerCategory]
+            The category of the issuer.
 
         Returns
         -------
-        list[dict[str, str]]
+        list[IssuerDType]
 
         example
         -------
-        >>> from codalpy import Fund
-        >>> Fund.supported_funds()
+        >>> from codalpy import Codal, IssuerCategory
+        >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
+        [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>), IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
         """
         return Issuer().get_issuers_by_category(cagegory)
 
@@ -236,8 +242,10 @@ class Codal:
                 return df
 
     def monthly_activity(self):
-        pass
-
+        self._query.category = QueryCategory.MONTHLY_ACTIVITY
+        self._query.letter_type = QueryLetterType.MONTHLY_ACTIVITY
+        letters = self.letter()
+        print(letters)
     def fund_monthly_portfolio(self) -> pl.DataFrame:
         """
         .. raw:: html
