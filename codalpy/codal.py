@@ -238,7 +238,7 @@ class Codal:
     def monthly_activity(self):
         pass
 
-    def monthly_portfolio(self) -> pl.DataFrame:
+    def fund_monthly_portfolio(self) -> pl.DataFrame:
         """
         .. raw:: html
 
@@ -252,27 +252,27 @@ class Codal:
 
         example
         -------
-        >>> from codalpy import Fund
-        >>> fund = Fund(symbol="شتاب", jdate_from="1404/01/01")
-        >>> fund.monthly_portfolio()
-        shape: (760, 18)
-        ┌─────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
-        │ name                        ┆ volume_beg ┆ total_cost_beg ┆ net_proceeds_beg ┆ … ┆ symbol ┆ title                           ┆ url                             ┆ attachment_url                  │
-        │ ---                         ┆ ---        ┆ ---            ┆ ---              ┆   ┆ ---    ┆ ---                             ┆ ---                             ┆ ---                             │
-        │ str                         ┆ i64        ┆ i64            ┆ i64              ┆   ┆ str    ┆ str                             ┆ str                             ┆ str                             │
-        ╞═════════════════════════════╪════════════╪════════════════╪══════════════════╪═══╪════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
-        │ آهن و فولاد غدیر ایرانیان    ┆ 4556339    ┆ 31093465496    ┆ 24367250852      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ البرزدارو                   ┆ 26671574   ┆ 80704956520    ┆ 99052112711      ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ انتقال داده های آسیاتک      ┆ 138080161  ┆ 557028375688   ┆ 521719877943     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ ایران خودرو دیزل            ┆ 207374030  ┆ 349859951641   ┆ 321990921362     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ ایران‌ خودرو                 ┆ 730831581  ┆ 291639316957   ┆ 422086700327     ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ …                           ┆ …          ┆ …              ┆ …                ┆ … ┆ …      ┆ …                               ┆ …                               ┆ …                               │
-        │ مهرمام میهن                 ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ سرمایه گذاری گروه توسعه ملی ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ اختیارخ فزر-38000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ اختیارخ فزر-36000-14031212  ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        │ گروه دارویی سبحان           ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ شتاب   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
-        └─────────────────────────────┴────────────┴────────────────┴──────────────────┴───┴────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+        >>> from codalpy import Codal
+        >>> codal = Codal(issuer = "اهرم", from_jdate= "1404-04-04", to_jdate="1405-01-01")
+        >>> codal.fund_monthly_portfolio()
+        shape: (603, 18)
+        ┌──────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
+        │ name                         ┆ volume_beg ┆ total_cost_beg ┆ net_proceeds_beg ┆ … ┆ symbol ┆ title                           ┆ url                             ┆ attachment_url                  │
+        │ ---                          ┆ ---        ┆ ---            ┆ ---              ┆   ┆ ---    ┆ ---                             ┆ ---                             ┆ ---                             │
+        │ str                          ┆ i64        ┆ i64            ┆ i64              ┆   ┆ str    ┆ str                             ┆ str                             ┆ str                             │
+        ╞══════════════════════════════╪════════════╪════════════════╪══════════════════╪═══╪════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
+        │ آهن و فولاد غدیر ایرانیان     ┆ 24500000   ┆ 140495106806   ┆ 123719463000     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ اقتصادی و خودکفایی آزادگان   ┆ 58949663   ┆ 428681824109   ┆ 363313257531     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ البرزدارو                    ┆ 266248175  ┆ 853755414625   ┆ 982697425906     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ الحاوی                       ┆ 79400000   ┆ 175805992152   ┆ 102290130720     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ الکتریک‌ خودرو شرق‌            ┆ 117032944  ┆ 427355209792   ┆ 310735053213     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ …                            ┆ …          ┆ …              ┆ …                ┆ … ┆ …      ┆ …                               ┆ …                               ┆ …                               │
+        │ کشت و دامداری فکا            ┆ 38000000   ┆ 42921313500    ┆ 137950282800     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ کویر تایر                    ┆ 84043466   ┆ 168768973101   ┆ 619056648665     ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ ح . سرمایه گذاری‌البرز(هلدینگ‌ ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ سنگ آهن گهرزمین              ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        │ ح . سنگ آهن گهرزمین          ┆ 0          ┆ 0              ┆ 0                ┆ … ┆ اهرم   ┆ صورت وضعیت پورتفوی صندوق سرمای… ┆ https://www.codal.ir/Reports/A… ┆ https://www.codal.ir/Reports/A… │
+        └──────────────────────────────┴────────────┴────────────────┴──────────────────┴───┴────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
         """
         self._query.category = QueryCategory.MONTHLY_ACTIVITY
         self._query.letter_type = QueryLetterType.PORTFOLIO_POSITION
@@ -316,7 +316,7 @@ class Codal:
                     clean_df = clean_raw_portfolio_df(raw_df)
                     clean_df = clean_df.with_columns(
                         publish_date_time=pl.lit(letter.publish_date_time),
-                        symbol=pl.lit(self._issuer.symbol),
+                        issuer=pl.lit(self._issuer.symbol),
                         title=pl.lit(letter.title),
                         url=pl.lit(letter.url),
                         attachment_url=pl.lit(letter.attachment_url),
