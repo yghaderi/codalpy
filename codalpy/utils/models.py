@@ -1,7 +1,7 @@
 from typing import ClassVar, Optional
+from typing_extensions import Literal
 
-from pydantic import (BaseModel, ConfigDict, Field, alias_generators,
-                      field_validator)
+from pydantic import BaseModel, ConfigDict, Field, alias_generators, field_validator
 
 from codalpy.utils.utils import norm_char
 
@@ -56,32 +56,43 @@ class Cell(BaseModel):
         alias_generator=alias_generators.to_camel, populate_by_name=True
     )
 
+    meta_table_id: int
+    meta_table_code: int
     address: str
-    category: int
+    formula: str
+    validations: str
+    financial_concept: Optional[str]
     cell_group_name: str
+    category: int
     col_span: int
     column_code: int
     column_sequence: int
     decimal_place: int
-    period_end_to_date: str
     row_code: int
     row_sequence: int
     row_span: int
     row_type_name: str
     value: str
     value_type_name: str
+    data_type_name: Optional[str]
+    period_end_to_date: str
     year_end_to_date: str
+    is_audited: bool
 
 
 class Table(BaseModel):
     model_config = ConfigDict(
         alias_generator=alias_generators.to_camel, populate_by_name=True
     )
-
+    meta_table_id: int
+    title_fa: Optional[str] = Field(alias="title_Fa")
+    title_en: Optional[str] = Field(alias="title_En")
     sequence: int
     sheet_code: int
+    code: int
+    description: Optional[str]
+    alias_name: Optional[str]
     version_no: str
-    alias_name: str | None
     cells: list[Cell]
 
 
@@ -89,11 +100,11 @@ class Sheet(BaseModel):
     model_config = ConfigDict(
         alias_generator=alias_generators.to_camel, populate_by_name=True
     )
-
-    version_no: int
-    alias_name: str
     code: int
+    title_fa: str = Field(alias="title_Fa")
+    title_en: str = Field(alias="title_En")
     sequence: int
+    is_dynamic: bool
     tables: list[Table]
 
 
@@ -143,3 +154,16 @@ class DataSource(BaseModel):
     publish_date_time: str
     state: int
     is_for_auditing: bool
+    sheets: list[Sheet]
+
+
+class GetDataSourceError(BaseModel):
+    source: Literal["match", "validation"]
+    message: str
+
+
+class GetDataSourceResult(BaseModel):
+    status: Literal["success", "error"]
+    letter: Letter
+    data: Optional[DataSource]
+    error: Optional[GetDataSourceError]

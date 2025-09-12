@@ -10,19 +10,21 @@ from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.gen_df import clean_df
 from codalpy.utils.http import HEADERS, get
 from codalpy.utils.issuer import Issuer, IssuerCategory, IssuerDType
-from codalpy.utils.models import (FinancialStatement, GetFinancialStatement,
-                                  Letter)
-from codalpy.utils.query import (Consts, QueryCategory, QueryLetterType,
-                                 QueryParam)
+from codalpy.utils.models import (
+    FinancialStatement,
+    GetFinancialStatement,
+    Letter,
+    DataSource,
+    GetDataSourceResult,
+    GetDataSourceError,
+)
+from codalpy.utils.query import Consts, QueryCategory, QueryLetterType, QueryParam
 from codalpy.utils.utils import normalize_fs_item
 
 
 class Codal:
     def __init__(self, issuer: str, from_jdate: str, to_jdate: str) -> None:
         self._issuer = Issuer().validate(issuer)
-        self.base_url = "https://codal.ir"
-        self.search_url = "https://search.codal.ir/api/search/v2/q?"
-        self.api = "api/search/v2/q"
         self._query = QueryParam(
             symbol=self._issuer.alias,
             from_date=from_jdate,
@@ -77,26 +79,26 @@ class Codal:
     @staticmethod
     def supported_issuers(cagegory: list[IssuerCategory]) -> list[IssuerDType]:
         """
-        .. raw:: html
+                .. raw:: html
 
-            <div dir="rtl">
-ناشرهایی که پشتیبانی میشه رو بهت میده.
-            </div>
+                    <div dir="rtl">
+        ناشرهایی که پشتیبانی میشه رو بهت میده.
+                    </div>
 
-        Parameters
-        ----------
-        cagegory : list[IssuerCategory]
-            The category of the issuer.
+                Parameters
+                ----------
+                cagegory : list[IssuerCategory]
+                    The category of the issuer.
 
-        Returns
-        -------
-        list[IssuerDType]
+                Returns
+                -------
+                list[IssuerDType]
 
-        example
-        -------
-        >>> from codalpy import Codal, IssuerCategory
-        >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
-        [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>), IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
+                example
+                -------
+                >>> from codalpy import Codal, IssuerCategory
+                >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
+                [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>), IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
         """
         return Issuer().get_issuers_by_category(cagegory)
 
@@ -107,7 +109,6 @@ class Codal:
             headers=HEADERS,
         )
         data: dict = r.json()
-        print(data)
         pages = str(data.get("Page"))
         Letter.base_url = self._consts.base_url
         letters = [Letter.model_validate(i) for i in data["Letters"]]
@@ -138,7 +139,11 @@ class Codal:
                 urlp = urlparse(i.url)
                 params = parse_qs(urlp.query)
                 params["SheetId"] = [sheet_id]
-                r = get(url=f"{self.base_url}{urlp.path}", params=params, rtype="text")
+                r = get(
+                    url=f"{self._consts.base_url}{urlp.path}",
+                    params=params,
+                    rtype="text",
+                )
                 if r is not None:
                     pattern = r"var datasource = (.*?);"
                     match = re.search(pattern, r)
@@ -160,6 +165,50 @@ class Codal:
                 match_error=match_error,
                 validation_error=validation_error,
             )
+
+    def _get_data_source(self) -> list[GetDataSourceResult]:
+        letters = self.letter()
+        records: list[GetDataSourceResult] = []
+        if letters is not None:
+            for i in letters:
+                urlp = urlparse(i.url)
+                params = parse_qs(urlp.query)
+                # params["SheetId"] = [sheet_id]
+                r = get(
+                    url=f"{self._consts.base_url}{urlp.path}",
+                    params=params,
+                    rtype="text",
+                )
+                data: DataSource | None = None
+                error: GetDataSourceError | None = None
+                status = "error"
+                if r is not None:
+                    pattern = r"var datasource = (.*?);"
+                    match = re.search(pattern, r)
+                    if match:
+                        text = match.group(1)
+                        try:
+                            data = DataSource.model_validate_json(text)
+                            status = "success"
+                        except Exception as e:
+
+                            error = GetDataSourceError(
+                                source="validation", message=str(e)
+                            )
+                    else:
+                        error = GetDataSourceError(
+                            source="match", message="Cannot find data."
+                        )
+                else:
+                    error = GetDataSourceError(
+                        source="match", message="Cannot find data."
+                    )
+                records.append(
+                    GetDataSourceResult(
+                        status=status, letter=i, data=data, error=error
+                    )
+                )
+        return records
 
     def income_statement(self) -> pl.DataFrame | None:
         """
@@ -244,8 +293,9 @@ class Codal:
     def monthly_activity(self):
         self._query.category = QueryCategory.MONTHLY_ACTIVITY
         self._query.letter_type = QueryLetterType.MONTHLY_ACTIVITY
-        letters = self.letter()
-        print(letters)
+        data = self._get_data_source()
+        return data
+
     def fund_monthly_portfolio(self) -> pl.DataFrame:
         """
         .. raw:: html
