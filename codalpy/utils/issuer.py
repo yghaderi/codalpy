@@ -158,4 +158,35 @@ issuers = [
         alias="شپديس",
         category=IssuerCategory.MANUFACTURING,
     ),
+    IssuerDType(
+        symbol="شيراز",
+        name="پتروشيمي شيراز",
+        alias="شيراز",
+        category=IssuerCategory.MANUFACTURING,
+    ),
+    IssuerDType(
+        symbol="کرماشا",
+        name="صنايع پتروشيمي کرمانشاه",
+        alias="کرماشا",
+        category=IssuerCategory.MANUFACTURING,
+    ),
+    IssuerDType(
+        symbol="فولاد",
+        name="فولاد مبارکه اصفهان",
+        alias="فولاد",
+        category=IssuerCategory.MANUFACTURING,
+    ),
+    IssuerDType(
+        symbol="فملی",
+        name="ملی صنایع مس ایران",
+        alias="فملی",
+        category=IssuerCategory.MANUFACTURING,
+    ),
+    # BANKING
+    IssuerDType(
+        symbol="وبملت",
+        name="بانک ملت",
+        alias="وبملت",
+        category=IssuerCategory.BANKING,
+    ),
 ]
