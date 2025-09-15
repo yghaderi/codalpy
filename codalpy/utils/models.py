@@ -1,7 +1,7 @@
 from typing import ClassVar, Optional
-from typing_extensions import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, alias_generators, field_validator
+from typing_extensions import Literal
 
 from codalpy.utils.utils import norm_char
 
@@ -162,7 +162,7 @@ class GetDataSourceError(BaseModel):
     message: str
 
 
-class GetDataSourceResult(BaseModel):
+class DataSourceResult(BaseModel):
     status: Literal["success", "error"]
     letter: Letter
     data: Optional[DataSource]

@@ -1,22 +1,19 @@
 import re
 from io import BytesIO
-from typing import Literal
+from typing import Optional
 from urllib.parse import parse_qs, urlparse
 
 import polars as pl
 import requests
 
 from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
-from codalpy.utils.gen_df import clean_df
 from codalpy.utils.http import HEADERS, get
 from codalpy.utils.issuer import Issuer, IssuerCategory, IssuerDType
 from codalpy.utils.models import (
-    FinancialStatement,
-    GetFinancialStatement,
-    Letter,
     DataSource,
-    GetDataSourceResult,
+    DataSourceResult,
     GetDataSourceError,
+    Letter,
 )
 from codalpy.utils.query import Consts, QueryCategory, QueryLetterType, QueryParam
 from codalpy.utils.utils import normalize_fs_item
@@ -98,7 +95,8 @@ class Codal:
                 -------
                 >>> from codalpy import Codal, IssuerCategory
                 >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
-                [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>), IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
+                [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>),
+                IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
         """
         return Issuer().get_issuers_by_category(cagegory)
 
@@ -119,61 +117,24 @@ class Codal:
                     self._query.page_number = p
                     r = requests.get(
                         url=self._consts.search_url,
-                        params=self._query.model_dump(by_alias=True),
+                        params=self._query.model_dump(by_alias=True, mode="json"),
                         headers=HEADERS,
                     )
                     data: dict = r.json()
                     letters.extend([Letter.model_validate(i) for i in data["Letters"]])
         return letters
 
-    def _get_financial_statement(
-        self, sheet_id: Literal["0", "1"]
-    ) -> GetFinancialStatement | None:
+    def _get_data_source(
+        self, sheet_id: Optional[str] = None
+    ) -> list[DataSourceResult]:
         letters = self.letter()
-        if letters is not None:
-            records = []
-            get_error = []
-            match_error = []
-            validation_error = []
-            for i in letters:
-                urlp = urlparse(i.url)
-                params = parse_qs(urlp.query)
-                params["SheetId"] = [sheet_id]
-                r = get(
-                    url=f"{self._consts.base_url}{urlp.path}",
-                    params=params,
-                    rtype="text",
-                )
-                if r is not None:
-                    pattern = r"var datasource = (.*?);"
-                    match = re.search(pattern, r)
-                    if match:
-                        text = match.group(1)
-                        try:
-                            records.append(
-                                (i, FinancialStatement.model_validate_json(text))
-                            )
-                        except Exception as e:
-                            validation_error.append((i, str(e)))
-                    else:
-                        match_error.append((i, str(r)))
-                else:
-                    get_error.append(i)
-            return GetFinancialStatement(
-                records=records,
-                get_error=get_error,
-                match_error=match_error,
-                validation_error=validation_error,
-            )
-
-    def _get_data_source(self) -> list[GetDataSourceResult]:
-        letters = self.letter()
-        records: list[GetDataSourceResult] = []
+        records: list[DataSourceResult] = []
         if letters is not None:
             for i in letters:
                 urlp = urlparse(i.url)
                 params = parse_qs(urlp.query)
-                # params["SheetId"] = [sheet_id]
+                if sheet_id is not None:
+                    params["SheetId"] = [sheet_id]
                 r = get(
                     url=f"{self._consts.base_url}{urlp.path}",
                     params=params,
@@ -204,93 +165,88 @@ class Codal:
                         source="match", message="Cannot find data."
                     )
                 records.append(
-                    GetDataSourceResult(
-                        status=status, letter=i, data=data, error=error
-                    )
+                    DataSourceResult(status=status, letter=i, data=data, error=error)
                 )
         return records
 
-    def income_statement(self) -> pl.DataFrame | None:
+    def income_statement(self) -> list[DataSourceResult]:
         """
-        .. raw:: html
+                .. raw:: html
 
-            <div dir="rtl">
-                صورت-عملکردِ مالی رو بهت میده
-            </div>
+                    <div dir="rtl">
+        داده هایٍ صورت-عملکردِ مالی رو بهت میده
+                    </div>
 
-        Returns
-        -------
-        polars.DataFrame
+                Returns
+                -------
+                list[DataSourceResult]
 
-        example
-        -------
-        >>> from codalpy import Codal, QueryParam
-        >>> query = QueryParam(symbol="زاگرس",length=12, from_date="1400/01/01")
-        >>> codal = Codal(query=query, category="production")
-        >>> codal.income_statement()
-        shape: (8, 29)
-        ┌───────────┬───────────────┬──────────────┬────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
-        │ sales     ┆ cost_of_sales ┆ gross_profit ┆ operating_expenses ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │
-        │ ---       ┆ ---           ┆ ---          ┆ ---                ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │
-        │ i64       ┆ i64           ┆ i64          ┆ i64                ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │
-        ╞═══════════╪═══════════════╪══════════════╪════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
-        │ 258734831 ┆ -192020455    ┆ 66714376     ┆ -57185171          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 258734831 ┆ -192020455    ┆ 66714376     ┆ -57363718          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 214213606 ┆ -145108587    ┆ 69105019     ┆ -44188435          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 214213606 ┆ -147350610    ┆ 66862996     ┆ -46301021          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 192628444 ┆ -132224423    ┆ 60404021     ┆ -32817902          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 192628444 ┆ -132224423    ┆ 60404021     ┆ -32834603          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 143234768 ┆ -61344224     ┆ 81890544     ┆ -34001119          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 143234768 ┆ -61251730     ┆ 81983038     ┆ -31375649          ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        └───────────┴───────────────┴──────────────┴────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+                example
+                -------
+                >>> from codalpy import Codal
+                >>> codal = Codal(
+                    issuer = "شپدیس",
+                    from_jdate = "1401/01/01",
+                    to_jdate = "1404/12/29"
+                )
+                >>> data = codal.income_statement()
         """
-        data = self._get_financial_statement("1")
-        if data:
-            if data.records:
-                df = clean_df(data.records, self._issuer.category, "IncomeStatement")
-                return df
+        self._query.category = QueryCategory.ANNUAL_FINANCIAL_STATEMETNS
+        self._query.letter_type = QueryLetterType.INTERIM_FINANCIAL_STATEMENTS
+        data = self._get_data_source(sheet_id="1")
+        return data
 
-    def balance_sheet(self) -> pl.DataFrame | None:
+    def balance_sheet(self) -> list[DataSourceResult]:
         """
-        .. raw:: html
+                .. raw:: html
 
-            <div dir="rtl">
-                صورت-وضعیتِ مالی رو بهت میده
-            </div>
+                    <div dir="rtl">
+        داده هایٍ صورت-وضعیتِ مالی رو بهت میده
+                    </div>
 
-        Returns
-        -------
-        polars.DataFrame
+                Returns
+                -------
+                list[DataSourceResult]
 
-        example
-        -------
-        >>> from codalpy import Codal, QueryParam
-        >>> query = QueryParam(symbol="زاگرس",length=12, from_date="1400/01/01")
-        >>> codal = Codal(query=query, category="production")
-        >>> codal.balance_sheet()
-        shape: (8, 54)
-        ┌──────────────────────────────┬─────────────────────┬──────────┬───────────────────────┬───┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
-        │ property_plant_and_equipment ┆ investment_property ┆ goodwill ┆ long_term_investments ┆ … ┆ url                             ┆ attachment_url                  ┆ pdf_url                         ┆ excel_url                       │
-        │ ---                          ┆ ---                 ┆ ---      ┆ ---                   ┆   ┆ ---                             ┆ ---                             ┆ ---                             ┆ ---                             │
-        │ i64                          ┆ i64                 ┆ i64      ┆ i64                   ┆   ┆ str                             ┆ str                             ┆ str                             ┆ str                             │
-        ╞══════════════════════════════╪═════════════════════╪══════════╪═══════════════════════╪═══╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╪═════════════════════════════════╡
-        │ 57889093                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 62330228                     ┆ 0                   ┆ 2138291  ┆ 251279                ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 42330444                     ┆ 0                   ┆ 117755   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 15940028                     ┆ 0                   ┆ 163858   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 15940028                     ┆ 0                   ┆ 147157   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 12746494                     ┆ 0                   ┆ 138823   ┆ 4039308               ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        │ 10613508                     ┆ 0                   ┆ 138823   ┆ 11279                 ┆ … ┆ https://codal.ir/Reports/Decis… ┆ https://codal.ir/Reports/Attac… ┆ https://codal.ir/DownloadFile.… ┆ https://excel.codal.ir/service… │
-        └──────────────────────────────┴─────────────────────┴──────────┴───────────────────────┴───┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+                example
+                -------
+                >>> from codalpy import Codal
+                >>> codal = Codal(
+                    issuer = "شپدیس",
+                    from_jdate = "1401/01/01",
+                    to_jdate = "1404/12/29"
+                )
+                >>> data = codal.balance_sheet()
         """
-        data = self._get_financial_statement("0")
-        if data:
-            if data.records:
-                df = clean_df(data.records, self._issuer.category, "BalanceSheet")
-                return df
+        self._query.category = QueryCategory.ANNUAL_FINANCIAL_STATEMETNS
+        self._query.letter_type = QueryLetterType.INTERIM_FINANCIAL_STATEMENTS
+        data = self._get_data_source(sheet_id="0")
+        return data
 
-    def monthly_activity(self):
+    def monthly_activity(self) -> list[DataSourceResult]:
+        """
+                .. raw:: html
+
+                    <div dir="rtl">
+        داده هایٍ فعالیتِ ماهانه رو بهت میده
+                    </div>
+
+                Returns
+                -------
+                list[DataSourceResult]
+
+                example
+                -------
+                >>> from codalpy import Codal
+                >>> codal = Codal(
+                    issuer = "شپدیس",
+                    from_jdate = "1404/04/01",
+                    to_jdate = "1404/12/29"
+                )
+                >>> data = codal.monthly_activity()
+        """
+        if self.issuer.category == IssuerCategory.FUND:
+            raise ValueError("Issuer category should not be FUND")
         self._query.category = QueryCategory.MONTHLY_ACTIVITY
         self._query.letter_type = QueryLetterType.MONTHLY_ACTIVITY
         data = self._get_data_source()
