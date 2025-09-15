@@ -27,5 +27,8 @@ dev = [
     "pandas>=2.3.1",
     "pre-commit>=4.2.0",
     "psycopg2-binary>=2.9.10",
+    "pydata-sphinx-theme>=0.16.1",
+    "sphinx-autoapi>=3.6.0",
+    "sphinx-copybutton>=0.5.2",
     "sqlalchemy>=2.0.42",
 ]
