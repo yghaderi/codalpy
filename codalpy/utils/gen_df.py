@@ -4,7 +4,7 @@ import polars as pl
 
 from codalpy.utils import cols, dicts
 from codalpy.utils.issuer import IssuerCategory
-from codalpy.utils.models import Cell, FinancialStatement, Letter
+from codalpy.models import Cell, FinancialStatement, Letter
 from codalpy.utils.utils import (
     fiscal_month,
     normalize_fs_item,
