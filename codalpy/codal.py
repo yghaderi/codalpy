@@ -9,7 +9,7 @@ import requests
 from codalpy.utils.fund import clean_raw_portfolio_df, find_download_endpoint
 from codalpy.utils.http import HEADERS, get
 from codalpy.utils.issuer import Issuer, IssuerCategory, IssuerDType
-from codalpy.utils.models import (
+from codalpy.models import (
     DataSource,
     DataSourceResult,
     GetDataSourceError,
@@ -76,27 +76,27 @@ class Codal:
     @staticmethod
     def supported_issuers(cagegory: list[IssuerCategory]) -> list[IssuerDType]:
         """
-                .. raw:: html
+        .. raw:: html
 
-                    <div dir="rtl">
-        ناشرهایی که پشتیبانی میشه رو بهت میده.
-                    </div>
+            <div dir="rtl">
+                ناشرهایی که پشتیبانی میشه رو بهت میده.
+            </div>
 
-                Parameters
-                ----------
-                cagegory : list[IssuerCategory]
-                    The category of the issuer.
+        Parameters
+        ----------
+        cagegory : list[IssuerCategory]
+            The category of the issuer.
 
-                Returns
-                -------
-                list[IssuerDType]
+        Returns
+        -------
+        list[IssuerDType]
 
-                example
-                -------
-                >>> from codalpy import Codal, IssuerCategory
-                >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
-                [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>),
-                IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
+        example
+        -------
+        >>> from codalpy import Codal, IssuerCategory
+        >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
+        [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>),
+        IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
         """
         return Issuer().get_issuers_by_category(cagegory)
 
@@ -171,25 +171,25 @@ class Codal:
 
     def income_statement(self) -> list[DataSourceResult]:
         """
-                .. raw:: html
+        .. raw:: html
 
-                    <div dir="rtl">
-        داده هایٍ صورت-عملکردِ مالی رو بهت میده
-                    </div>
+            <div dir="rtl">
+                داده هایٍ صورت-عملکردِ مالی رو بهت میده
+            </div>
 
-                Returns
-                -------
-                list[DataSourceResult]
+        Returns
+        -------
+        list[DataSourceResult]
 
-                example
-                -------
-                >>> from codalpy import Codal
-                >>> codal = Codal(
-                    issuer = "شپدیس",
-                    from_jdate = "1401/01/01",
-                    to_jdate = "1404/12/29"
-                )
-                >>> data = codal.income_statement()
+        example
+        -------
+        >>> from codalpy import Codal
+        >>> codal = Codal(
+            issuer = "شپدیس",
+            from_jdate = "1401/01/01",
+            to_jdate = "1404/12/29"
+        )
+        >>> data = codal.income_statement()
         """
         self._query.category = QueryCategory.ANNUAL_FINANCIAL_STATEMETNS
         self._query.letter_type = QueryLetterType.INTERIM_FINANCIAL_STATEMENTS
@@ -198,25 +198,25 @@ class Codal:
 
     def balance_sheet(self) -> list[DataSourceResult]:
         """
-                .. raw:: html
+        .. raw:: html
 
-                    <div dir="rtl">
-        داده هایٍ صورت-وضعیتِ مالی رو بهت میده
-                    </div>
+            <div dir="rtl">
+                داده هایٍ صورت-وضعیتِ مالی رو بهت میده
+            </div>
 
-                Returns
-                -------
-                list[DataSourceResult]
+        Returns
+        -------
+        list[DataSourceResult]
 
-                example
-                -------
-                >>> from codalpy import Codal
-                >>> codal = Codal(
-                    issuer = "شپدیس",
-                    from_jdate = "1401/01/01",
-                    to_jdate = "1404/12/29"
-                )
-                >>> data = codal.balance_sheet()
+        example
+        -------
+        >>> from codalpy import Codal
+        >>> codal = Codal(
+            issuer = "شپدیس",
+            from_jdate = "1401/01/01",
+            to_jdate = "1404/12/29"
+        )
+        >>> data = codal.balance_sheet()
         """
         self._query.category = QueryCategory.ANNUAL_FINANCIAL_STATEMETNS
         self._query.letter_type = QueryLetterType.INTERIM_FINANCIAL_STATEMENTS
@@ -225,25 +225,25 @@ class Codal:
 
     def monthly_activity(self) -> list[DataSourceResult]:
         """
-                .. raw:: html
+        .. raw:: html
 
-                    <div dir="rtl">
-        داده هایٍ فعالیتِ ماهانه رو بهت میده
-                    </div>
+            <div dir="rtl">
+                داده هایٍ فعالیتِ ماهانه رو بهت میده
+            </div>
 
-                Returns
-                -------
-                list[DataSourceResult]
+        Returns
+        -------
+        list[DataSourceResult]
 
-                example
-                -------
-                >>> from codalpy import Codal
-                >>> codal = Codal(
-                    issuer = "شپدیس",
-                    from_jdate = "1404/04/01",
-                    to_jdate = "1404/12/29"
-                )
-                >>> data = codal.monthly_activity()
+        example
+        -------
+        >>> from codalpy import Codal
+        >>> codal = Codal(
+            issuer = "شپدیس",
+            from_jdate = "1404/04/01",
+            to_jdate = "1404/12/29"
+        )
+        >>> data = codal.monthly_activity()
         """
         if self.issuer.category == IssuerCategory.FUND:
             raise ValueError("Issuer category should not be FUND")
@@ -267,7 +267,7 @@ class Codal:
         example
         -------
         >>> from codalpy import Codal
-        >>> codal = Codal(issuer = "اهرم", from_jdate= "1404-04-04", to_jdate="1405-01-01")
+        >>> codal = Codal(issuer = "اهرم", from_jdate= "1404-04-04", to_jdate="1404-06-06")
         >>> codal.fund_monthly_portfolio()
         shape: (603, 18)
         ┌──────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
