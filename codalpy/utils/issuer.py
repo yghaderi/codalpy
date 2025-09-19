@@ -31,7 +31,7 @@ class Issuer:
                 {
                     "symbol": i[0],
                     "name": i[1],
-                    "alias": i[0],
+                    "alias": i[2],
                     "isin": i[3],
                     "category": i[4],
                 }
