@@ -33,106 +33,92 @@ Module Contents
       :staticmethod:
 
 
-              .. raw:: html
+      .. raw:: html
 
-                  <div dir="rtl">
-      ناشرهایی که پشتیبانی میشه رو بهت میده.
-                  </div>
+          <div dir="rtl">
+              ناشرهایی که پشتیبانی میشه رو بهت میده.
+          </div>
 
-              Parameters
-              ----------
-              cagegory : list[IssuerCategory]
-                  The category of the issuer.
+      :param cagegory: The category of the issuer.
+      :type cagegory: list[IssuerCategory]
 
-              Returns
-              -------
-              list[IssuerDType]
+      :rtype: list[IssuerDType]
 
-              example
-              -------
-              >>> from codalpy import Codal, IssuerCategory
-              >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
-              [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>),
-              IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
+      .. rubric:: Example
+
+      >>> from codalpy import Codal, IssuerCategory
+      >>> Codal.supported_issuers([IssuerCategory.FUND])[:2]
+      [IssuerDType(name='سهامی اهرمی کاریزما', symbol='اهرم', alias='اهرم', category=<IssuerCategory.FUND: 'Fund'>),
+      IssuerDType(name='سهامی اهرمی مفید', symbol='توان', alias='توان', category=<IssuerCategory.FUND: 'Fund'>)]
 
 
 
+   .. py:method:: letter() -> list[codalpy.models.Letter]
 
-   .. py:method:: letter() -> list[codalpy.utils.models.Letter]
 
+   .. py:method:: income_statement() -> list[codalpy.models.DataSourceResult]
 
-   .. py:method:: income_statement() -> list[codalpy.utils.models.DataSourceResult]
+      .. raw:: html
 
-              .. raw:: html
+          <div dir="rtl">
+              داده هایٍ صورت-عملکردِ مالی رو بهت میده
+          </div>
 
-                  <div dir="rtl">
-      داده هایٍ صورت-عملکردِ مالی رو بهت میده
-                  </div>
+      :rtype: list[DataSourceResult]
 
-              Returns
-              -------
-              list[DataSourceResult]
+      .. rubric:: Example
 
-              example
-              -------
-              >>> from codalpy import Codal
-              >>> codal = Codal(
-                  issuer = "شپدیس",
-                  from_jdate = "1401/01/01",
-                  to_jdate = "1404/12/29"
-              )
-              >>> data = codal.income_statement()
+      >>> from codalpy import Codal
+      >>> codal = Codal(
+          issuer = "شپدیس",
+          from_jdate = "1401/01/01",
+          to_jdate = "1404/12/29"
+      )
+      >>> data = codal.income_statement()
 
 
 
+   .. py:method:: balance_sheet() -> list[codalpy.models.DataSourceResult]
 
-   .. py:method:: balance_sheet() -> list[codalpy.utils.models.DataSourceResult]
+      .. raw:: html
 
-              .. raw:: html
+          <div dir="rtl">
+              داده هایٍ صورت-وضعیتِ مالی رو بهت میده
+          </div>
 
-                  <div dir="rtl">
-      داده هایٍ صورت-وضعیتِ مالی رو بهت میده
-                  </div>
+      :rtype: list[DataSourceResult]
 
-              Returns
-              -------
-              list[DataSourceResult]
+      .. rubric:: Example
 
-              example
-              -------
-              >>> from codalpy import Codal
-              >>> codal = Codal(
-                  issuer = "شپدیس",
-                  from_jdate = "1401/01/01",
-                  to_jdate = "1404/12/29"
-              )
-              >>> data = codal.balance_sheet()
+      >>> from codalpy import Codal
+      >>> codal = Codal(
+          issuer = "شپدیس",
+          from_jdate = "1401/01/01",
+          to_jdate = "1404/12/29"
+      )
+      >>> data = codal.balance_sheet()
 
 
 
+   .. py:method:: monthly_activity() -> list[codalpy.models.DataSourceResult]
 
-   .. py:method:: monthly_activity() -> list[codalpy.utils.models.DataSourceResult]
+      .. raw:: html
 
-              .. raw:: html
+          <div dir="rtl">
+              داده هایٍ فعالیتِ ماهانه رو بهت میده
+          </div>
 
-                  <div dir="rtl">
-      داده هایٍ فعالیتِ ماهانه رو بهت میده
-                  </div>
+      :rtype: list[DataSourceResult]
 
-              Returns
-              -------
-              list[DataSourceResult]
+      .. rubric:: Example
 
-              example
-              -------
-              >>> from codalpy import Codal
-              >>> codal = Codal(
-                  issuer = "شپدیس",
-                  from_jdate = "1404/04/01",
-                  to_jdate = "1404/12/29"
-              )
-              >>> data = codal.monthly_activity()
-
+      >>> from codalpy import Codal
+      >>> codal = Codal(
+          issuer = "شپدیس",
+          from_jdate = "1404/04/01",
+          to_jdate = "1404/12/29"
+      )
+      >>> data = codal.monthly_activity()
 
 
 
@@ -149,7 +135,7 @@ Module Contents
       .. rubric:: Example
 
       >>> from codalpy import Codal
-      >>> codal = Codal(issuer = "اهرم", from_jdate= "1404-04-04", to_jdate="1405-01-01")
+      >>> codal = Codal(issuer = "اهرم", from_jdate= "1404-04-04", to_jdate="1404-06-06")
       >>> codal.fund_monthly_portfolio()
       shape: (603, 18)
       ┌──────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐

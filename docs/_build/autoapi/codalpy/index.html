@@ -243,6 +243,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">codalpy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="codal/index.html">codalpy.codal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/index.html">codalpy.models</a></li>
 </ul>
 </details></li>
 </ul>
@@ -312,6 +313,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="codal/index.html">codalpy.codal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models/index.html">codalpy.models</a></li>
 </ul>
 </div>
 </section>
@@ -354,42 +356,41 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="codalpy.Codal.supported_issuers">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supported_issuers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cagegory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.issuer.IssuerCategory</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.issuer.IssuerDType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.supported_issuers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.supported_issuers" title="Link to this definition">#</a></dt>
-<dd><blockquote>
-<div><div dir="rtl"></div></blockquote>
-<dl>
-<dt>ناشرهایی که پشتیبانی میشه رو بهت میده.</dt><dd><blockquote>
-<div><p>&lt;/div&gt;</p>
-</div></blockquote>
-<dl class="simple">
-<dt>cagegory<span class="classifier">list[IssuerCategory]</span></dt><dd><p>The category of the issuer.</p>
+<dd><div dir="rtl">
+    ناشرهایی که پشتیبانی میشه رو بهت میده.
+</div><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cagegory</strong> (<em>list</em><em>[</em><em>IssuerCategory</em><em>]</em>) – The category of the issuer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[IssuerDType]</p>
 </dd>
 </dl>
-<p>list[IssuerDType]</p>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codalpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Codal</span><span class="p">,</span> <span class="n">IssuerCategory</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Codal</span><span class="o">.</span><span class="n">supported_issuers</span><span class="p">([</span><span class="n">IssuerCategory</span><span class="o">.</span><span class="n">FUND</span><span class="p">])[:</span><span class="mi">2</span><span class="p">]</span>
 <span class="go">[IssuerDType(name=&#39;سهامی اهرمی کاریزما&#39;, symbol=&#39;اهرم&#39;, alias=&#39;اهرم&#39;, category=&lt;IssuerCategory.FUND: &#39;Fund&#39;&gt;),</span>
 <span class="go">IssuerDType(name=&#39;سهامی اهرمی مفید&#39;, symbol=&#39;توان&#39;, alias=&#39;توان&#39;, category=&lt;IssuerCategory.FUND: &#39;Fund&#39;&gt;)]</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="codalpy.Codal.letter">
-<span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.models.Letter</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.letter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.letter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models/index.html#codalpy.models.Letter" title="codalpy.models.Letter"><span class="pre">codalpy.models.Letter</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.letter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.letter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="codalpy.Codal.income_statement">
-<span class="sig-name descname"><span class="pre">income_statement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.models.DataSourceResult</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.income_statement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.income_statement" title="Link to this definition">#</a></dt>
-<dd><blockquote>
-<div><div dir="rtl"></div></blockquote>
-<dl>
-<dt>داده هایٍ صورت-عملکردِ مالی رو بهت میده</dt><dd><blockquote>
-<div><p>&lt;/div&gt;</p>
-</div></blockquote>
-<p>list[DataSourceResult]</p>
+<span class="sig-name descname"><span class="pre">income_statement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult"><span class="pre">codalpy.models.DataSourceResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.income_statement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.income_statement" title="Link to this definition">#</a></dt>
+<dd><div dir="rtl">
+    داده هایٍ صورت-عملکردِ مالی رو بهت میده
+</div><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult">DataSourceResult</a>]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codalpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Codal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span>
 <span class="go">    issuer = &quot;شپدیس&quot;,</span>
@@ -399,20 +400,19 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">codal</span><span class="o">.</span><span class="n">income_statement</span><span class="p">()</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="codalpy.Codal.balance_sheet">
-<span class="sig-name descname"><span class="pre">balance_sheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.models.DataSourceResult</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.balance_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.balance_sheet" title="Link to this definition">#</a></dt>
-<dd><blockquote>
-<div><div dir="rtl"></div></blockquote>
-<dl>
-<dt>داده هایٍ صورت-وضعیتِ مالی رو بهت میده</dt><dd><blockquote>
-<div><p>&lt;/div&gt;</p>
-</div></blockquote>
-<p>list[DataSourceResult]</p>
+<span class="sig-name descname"><span class="pre">balance_sheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult"><span class="pre">codalpy.models.DataSourceResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.balance_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.balance_sheet" title="Link to this definition">#</a></dt>
+<dd><div dir="rtl">
+    داده هایٍ صورت-وضعیتِ مالی رو بهت میده
+</div><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult">DataSourceResult</a>]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codalpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Codal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span>
 <span class="go">    issuer = &quot;شپدیس&quot;,</span>
@@ -422,20 +422,19 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">codal</span><span class="o">.</span><span class="n">balance_sheet</span><span class="p">()</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="codalpy.Codal.monthly_activity">
-<span class="sig-name descname"><span class="pre">monthly_activity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">codalpy.utils.models.DataSourceResult</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.monthly_activity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.monthly_activity" title="Link to this definition">#</a></dt>
-<dd><blockquote>
-<div><div dir="rtl"></div></blockquote>
-<dl>
-<dt>داده هایٍ فعالیتِ ماهانه رو بهت میده</dt><dd><blockquote>
-<div><p>&lt;/div&gt;</p>
-</div></blockquote>
-<p>list[DataSourceResult]</p>
+<span class="sig-name descname"><span class="pre">monthly_activity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult"><span class="pre">codalpy.models.DataSourceResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/codalpy/codal.html#Codal.monthly_activity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#codalpy.Codal.monthly_activity" title="Link to this definition">#</a></dt>
+<dd><div dir="rtl">
+    داده هایٍ فعالیتِ ماهانه رو بهت میده
+</div><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="models/index.html#codalpy.models.DataSourceResult" title="codalpy.models.DataSourceResult">DataSourceResult</a>]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codalpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Codal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span>
 <span class="go">    issuer = &quot;شپدیس&quot;,</span>
@@ -445,8 +444,6 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">codal</span><span class="o">.</span><span class="n">monthly_activity</span><span class="p">()</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -461,7 +458,7 @@
 </dl>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">codalpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Codal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span><span class="n">issuer</span> <span class="o">=</span> <span class="s2">&quot;اهرم&quot;</span><span class="p">,</span> <span class="n">from_jdate</span><span class="o">=</span> <span class="s2">&quot;1404-04-04&quot;</span><span class="p">,</span> <span class="n">to_jdate</span><span class="o">=</span><span class="s2">&quot;1405-01-01&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span> <span class="o">=</span> <span class="n">Codal</span><span class="p">(</span><span class="n">issuer</span> <span class="o">=</span> <span class="s2">&quot;اهرم&quot;</span><span class="p">,</span> <span class="n">from_jdate</span><span class="o">=</span> <span class="s2">&quot;1404-04-04&quot;</span><span class="p">,</span> <span class="n">to_jdate</span><span class="o">=</span><span class="s2">&quot;1404-06-06&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">codal</span><span class="o">.</span><span class="n">fund_monthly_portfolio</span><span class="p">()</span>
 <span class="go">shape: (603, 18)</span>
 <span class="go">┌──────────────────────────────┬────────────┬────────────────┬──────────────────┬───┬────────┬─────────────────────────────────┬─────────────────────────────────┬─────────────────────────────────┐</span>
