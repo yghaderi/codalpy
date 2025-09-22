@@ -12,6 +12,7 @@ dependencies = [
     "pyarrow>=19.0.1",
     "pydantic>=2.10.6",
     "requests>=2.32.3",
+    "tqdm>=4.67.1",
 ]
 
 [tool.pyright]

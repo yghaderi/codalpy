@@ -2,7 +2,7 @@ import re
 from io import BytesIO
 from typing import Optional
 from urllib.parse import parse_qs, urlparse
-
+from tqdm import tqdm
 import polars as pl
 import requests
 
@@ -130,7 +130,9 @@ class Codal:
         letters = self.letter()
         records: list[DataSourceResult] = []
         if letters is not None:
-            for i in letters:
+            pbar = tqdm(letters)
+            for i in pbar:
+                pbar.set_description(f"PJDate: {i.publish_date_time[:10]}")
                 urlp = urlparse(i.url)
                 params = parse_qs(urlp.query)
                 if sheet_id is not None:
@@ -292,7 +294,9 @@ class Codal:
         self._query.letter_type = QueryLetterType.PORTFOLIO_POSITION
         letters = self.letter()
         df = pl.DataFrame()
-        for letter in letters:
+        pbar = tqdm(letters)
+        for letter in pbar:
+            pbar.set_description(f"PJDate: {letter.publish_date_time[:10]}")
             if letter.has_attachment:
                 attachment = requests.get(letter.attachment_url, headers=HEADERS)
                 xlsx_endpoint = find_download_endpoint(attachment.text)
